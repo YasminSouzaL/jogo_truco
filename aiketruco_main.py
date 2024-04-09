@@ -15,17 +15,19 @@ def play_player(player, match):
             indexes.append(index + 1)
             print(str(index + 1) + " - " + str(card))
 
-        card = input("\nEscolha o número correspondente à carta que deseja jogar: ")
+        while True:
+            card = input("\nEscolha o número correspondente à carta que deseja jogar: ")
 
-        try:
-            card = int(card)
-            if 0 < card <= len(indexes):
-                player.throw_card(match=match, card_position=card)
-                break
-            else:
-                print("Entrada inválida.")
-        except ValueError:
-            print("Entrada inválida. Digite um número.")
+            try:
+                card = int(card)
+                if 0 < card <= len(indexes):
+                    player.throw_card(match=match, card_position=card)
+                    break
+                else:
+                    print("Erro: Número fora da faixa válida. Por favor, tente novamente.")
+            except ValueError:
+                print("Erro: Entrada inválida. Por favor, digite um número.")
+
 
 if __name__ == '__main__':
     print("\t\nAIKE TRUCO\n")
@@ -45,7 +47,7 @@ if __name__ == '__main__':
     player2 = Player("Italo", hand2)
     player3 = Player("Attany", hand3)
     player4 = Player("Keli", hand4)
-
+         
     while continue_game:
         match = game.current_match
         play_player(player1, match)
