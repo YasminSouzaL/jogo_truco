@@ -272,7 +272,7 @@ class TestRound:
 class TestGame:
     def __init__(self):
         self.current_match = None  # Initialize current_match in the constructor
-
+        
     def start_match(self):
         self.current_match = Match()  # Create a Match object when starting a match
 
@@ -295,15 +295,15 @@ class TestMatch:
 
     def test_start_match(self, match, deck):
         match.start_match()        
-        assert len(deck.cards) is (40 - 12)
+        assert len(deck.cards) == (40 - 12)
 
     def test_end_current_round(self, match):
         TestRound().add_round_cards_to_players(match.current_round)
         match.end_current_round()
-        assert len(match.rounds) is 1
+        assert len(match.rounds) == 1
         TestRound().add_round_cards_to_players(match.current_round)
         match.end_current_round()
-        assert len(match.rounds) is 2
+        assert len(match.rounds) == 2
 
     def test_normal_match_raise_match(self, match):
         
