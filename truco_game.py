@@ -240,10 +240,8 @@ class CardCheck(object):
 
 
 class Player(object):
-    """ Represents the player """
-
-    def __init__(self, player_name):
-        self.player_name = player_name
+    def __init__(self, name):
+        self.player_name = name
         self.hand = None
 
     def throw_card(self, match, card_position=1):
