@@ -1,5 +1,5 @@
 from ast import literal_eval as eval_input
-from truco_game import Player, Pair, Hand
+from truco_game import Match, Player, Pair, Hand, Deck
 from truco_regras import TestGame  # Importando a classe Game do truco_test
 
 def play_player(player, match):
@@ -47,9 +47,10 @@ if __name__ == '__main__':
     player2 = Player("Italo", hand2)
     player3 = Player("Attany", hand3)
     player4 = Player("Keli", hand4)
-         
+
     while continue_game:
         match = game.current_match
+        match = Match(game)  # Inicialize a instância de Match aqui
         play_player(player1, match)
         play_player(player2, match)
         play_player(player3, match)
@@ -61,3 +62,7 @@ if __name__ == '__main__':
             continue_game = False
 
     print("\t\t Fim do jogo!\n")
+    print("Placar final:")
+    print("Emilie e Attany: " + str(game.score[Pair.PAIR_ONE_ID]))  
+    print("Italo e Keli: " + str(game.score[Pair.PAIR_TWO_ID]))
+    print("\n")

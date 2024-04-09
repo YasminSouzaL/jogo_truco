@@ -85,6 +85,13 @@ class Deck():
         # Add the card back to the pool
         self.cards.append(card)
 
+    def deal(self, quantity):
+        cards = []
+        for i in range(0, quantity):
+            cards.append(self.get_top_card())
+        return cards
+    
+
 
 class Hand(object):
     """ Represents the player hand """
