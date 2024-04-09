@@ -1,6 +1,6 @@
 from ast import literal_eval as eval_input
-from truco_game import Card, Deck, Hand, CardCheck, Player, Pair, Game, Match, Round, MatchState, NormalMatch, TrucoMatch, SixMatch, NineMatch, TwelveMatch
-from truco_regras import Game, TestGame  # Importando a classe Game do truco_test
+from truco_game import  Player, Pair
+from truco_regras import TestGame  # Importando a classe Game do truco_test
 
 def play_player(player, match):
     while True:
@@ -29,12 +29,20 @@ if __name__ == '__main__':
     
     continue_game = True
     game = TestGame()  # Instanciando a classe Game do truco_test
+
+    # Criando instâncias de jogadores
+    player1 = Player("Emilie")
+    player2 = Player("Italo")
+    player3 = Player("Attany")
+    player4 = Player("Keli")
+
     while continue_game:
         match = game.current_match
-        
-        for _ in range(3):  # Cada jogador joga três cartas por rodada
-            play_player(Player, match)
-            
+        play_player(player1, match)
+        play_player(player2, match)
+        play_player(player3, match)
+        play_player(player4, match)
+
         end_game = game.score[Pair.PAIR_ONE_ID] >= 12 or game.score[Pair.PAIR_TWO_ID] >= 12
         if end_game:
             continue_game = False
