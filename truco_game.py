@@ -3,8 +3,6 @@ import random
 
 from ast import literal_eval
 
-from symbol import eval_input
-
 class Card():
     """Prototype class for Card"""
     def __init__(self, suit, value=None):
@@ -550,7 +548,7 @@ class Match:
         return accept
 
     def __get_pair_answer(self, message):
-        answer = eval_input(message + "\n" + "S - Sim/ N - Nao\n").lower()  
+        answer = eval(message + "\n" + "S - Sim/ N - Nao\n").lower()  
         if(answer == "s" or answer == "sim"):
             accept = True
         else:

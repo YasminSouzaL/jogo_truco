@@ -271,16 +271,20 @@ class TestRound:
         assert result_winner is expected_winner
 
 class TestGame:
+    def __init__(self):
+        self.current_match = None 
+    def start_match(self):
+        self.current_match = Match()  
+    match = game.current_match
+    def test_start_match(self, game):
+        game.start_match()
+        assert game.current_match is not None
 
-    def test_start_game(self, game, deck):
-        game.start() # 12 cards are distributed 
-        assert len(deck.cards) is (40 - 12)
+    def test_end_match(self, game):
+        game.start_match()
+        game.end_match()
+        assert game.current_match is None
 
-
-    def test_collect_cards(self, game, deck):
-        game.start() # 12 cards are distributed         
-        game.colect_cards()
-        assert len(deck.cards) is 40
 
 class TestMatch:
 
