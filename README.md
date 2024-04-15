@@ -27,3 +27,8 @@ Utilização dos padrões de projeto **Object Pool** (com **Singleton**), **Prot
 
 
 ![Modelo](http://i.imgur.com/JOQCrr5.png)
+
+
+temos a tela de jogador e classe:
+
+![telas](https://github.com/YasminSouzaL/jogo_truco/blob/main/test01.png)
