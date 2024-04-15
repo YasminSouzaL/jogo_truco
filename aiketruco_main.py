@@ -1,5 +1,5 @@
 from ast import literal_eval as eval_input
-from truco_game import Match, Player, Pair, Hand, Card
+from truco_game import Match, Player, Pair, Hand, Card, Game,Match # Importando as classes Match, Player, Pair, Hand, Card e Game do truco_game
 from truco_regras import TestGame  # Importando a classe Game do truco_test
 
 def play_player(player, match):
@@ -27,6 +27,14 @@ def play_player(player, match):
                     print("Erro: Número fora da faixa válida. Por favor, tente novamente.")
             except ValueError:
                 print("Erro: Entrada inválida. Por favor, digite um número inteiro.")
+
+        players = [player1, player2, player3, player4]
+        for player in players:
+            player.hand = None
+        
+    # Print the winner of the match
+        print("\n" + match.winner.player_name + " venceu a rodada!\n")
+        print("Placar: " + str(game.score[Pair.PAIR_ONE_ID]) + " x " + str(game.score[Pair.PAIR_TWO_ID]) + "\n")
 
 
 if __name__ == '__main__':

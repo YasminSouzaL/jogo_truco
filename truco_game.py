@@ -480,6 +480,7 @@ class Match:
         self.rounds = []
         self.rounds_winners = []
         self.state = NormalMatch(self)
+        self.winner = None
 
     def start_match(self):
         deck = Deck.get_instance()
