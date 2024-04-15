@@ -1,5 +1,5 @@
 from ast import literal_eval as eval_input
-from truco_game import Match, Player, Pair, Hand, Deck
+from truco_game import Match, Player, Pair, Hand, Card
 from truco_regras import TestGame  # Importando a classe Game do truco_test
 
 def play_player(player, match):
@@ -16,17 +16,17 @@ def play_player(player, match):
             print(str(index + 1) + " - " + str(card))
 
         while True:
-            card = input("\nEscolha o número correspondente à carta que deseja jogar: ")
+            card_input = input("\nEscolha o número correspondente à carta que deseja jogar: ")
 
             try:
-                card = int(card)
-                if 0 < card <= len(indexes):
+                card = int(card_input)
+                if 1 <= card <= len(indexes):
                     player.throw_card(match=match, card_position=card)
                     break
                 else:
                     print("Erro: Número fora da faixa válida. Por favor, tente novamente.")
             except ValueError:
-                print("Erro: Entrada inválida. Por favor, digite um número.")
+                print("Erro: Entrada inválida. Por favor, digite um número inteiro.")
 
 
 if __name__ == '__main__':
@@ -36,11 +36,11 @@ if __name__ == '__main__':
     continue_game = True
     game = TestGame()  # Instanciando a classe Game do truco_test
 
-    # Criando instâncias de mãos para os jogadores
-    hand1 = Hand([])
-    hand2 = Hand([])
-    hand3 = Hand([])
-    hand4 = Hand([])
+    # Adicione cartas à mão do jogador antes de iniciar o jogo
+    hand1 = Hand([Card('4', 'Copas'), Card('5', 'Espadas'), Card('6', 'Ouros')])
+    hand2 = Hand([Card('7', 'Copas'), Card('8', 'Espadas'), Card('9', 'Ouros')])
+    hand3 = Hand([Card('10', 'Copas'), Card('J', 'Espadas'), Card('Q', 'Ouros')])
+    hand4 = Hand([Card('K', 'Copas'), Card('A', 'Espadas'), Card('2', 'Ouros')])
 
     # Criando instâncias de jogadores com mãos associadas
     player1 = Player("Emilie", hand1)
@@ -62,7 +62,3 @@ if __name__ == '__main__':
             continue_game = False
 
     print("\t\t Fim do jogo!\n")
-    print("Placar final:")
-    print("Emilie e Attany: " + str(game.score[Pair.PAIR_ONE_ID]))  
-    print("Italo e Keli: " + str(game.score[Pair.PAIR_TWO_ID]))
-    print("\n")
