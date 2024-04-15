@@ -246,15 +246,13 @@ class CardCheck(object):
         return shackle
 
 
-class Player(object):
+class Player:
     def __init__(self, player_name, hand):
         self.player_name = player_name
         self.hand = hand
 
-    def throw_card(self, match, card_position=1):
-        card = self.hand.throw_card(card_position)
-        print("\n\t" + self.player_name + " jogou a carta " + str(card))
-        match.receive_card(self, card)
+    def throw_card(self, match, card_position):
+        match.throw_card(self, card_position)
 
 class Pair(object):
     """ Represents the pair """

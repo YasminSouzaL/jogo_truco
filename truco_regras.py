@@ -8,10 +8,7 @@ def deck():
 
 @pytest.fixture
 def game():
-
-    pair1 = {'player1': Player("Emilie"), 'player2': Player("Italo")}
-    pair2 = {'player1': Player("Attany"), 'player2': Player("Keli")}
-    pairs = [pair1, pair2]
+    pairs = []
 
     game = TestGame(pairs)
     
