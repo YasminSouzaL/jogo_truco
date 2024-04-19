@@ -1,5 +1,5 @@
 import tkinter as tk
-from truco_game import Pair, Player, Hand, Match 
+from truco_game import Pair, Hand, CardCheck, Card, Player, Match
 from truco_regras import TestGame, TestMatch
 
 
@@ -37,13 +37,11 @@ class TrucoJogador:
         if player_name not in self.player_names:
             self.player_names.append(player_name)
             self.player_name_entry.delete(0, tk.END)
-            self.player_listbox.insert(tk.END, player_name)
+            self.show_players()
             print(f"Jogador {player_name} adicionado")
         else:
-            print(f"O jogador {player_name} já está na lista.")
-        player_name = self.player_name_entry.get()
-        player = Player(player_name)
-        self.players.append(player)
+            print(f"Jogador {player_name} já adicionado")
+
 
     def remove_player(self):
         player_name = self.player_name_entry.get()
@@ -61,23 +59,31 @@ class TrucoJogador:
             self.player_listbox.insert(tk.END, player)
 
     def start_game(self):
-        if len(self.player_names) >= 2:
-            self.players = [Player(name, Hand([])) for name in self.player_names]
-            game = TestGame()
-            self.play_game(game)
-            self.master.destroy()
-        else:
-            print("É necessário adicionar pelo menos dois jogadores para iniciar o jogo.")
+        if len(self.player_names) < 2:
+            print("Número de jogadores insuficiente.")
+            return
 
+        self.players = [Player(name) for name in self.player_names]
+        game = TestGame(self.players)
+        self.play_game(game)
+    
+   
     def play_game(self, game):
-        while True:
-            match = game.current_match
-            match = Match(game)
+        print("Iniciando jogo.")
+        print("Placar do jogo:")
+        print(f"Equipe 1: {game.score[Pair.PAIR_ONE_ID]}")
+        print(f"Equipe 2: {game.score[Pair.PAIR_TWO_ID]}")
+        print()
 
-            for player in self.players:
-                self.play_player(player, match)
+        while not game.is_over():
+            match = game.start_match()
+            self.play_match(match)
 
-            end_game = game.score[Pair.PAIR_ONE_ID] >= 12 or game.score[Pair.PAIR_TWO_ID] >= 12
+        print("O jogo acabou.")
+        print(f"Vencedor do jogo: {game.winner.name}")
+        print("Placar final do jogo:")
+        print(f"Equipe 1: {game.score[Pair.PAIR_ONE_ID]}")
+        print(f"Equipe 2: {game.score[Pair.PAIR_TWO_ID]}")
 
     def play_player(self, player, match):
         print(f"Vez de {player.name} jogar.")
@@ -98,6 +104,27 @@ class TrucoJogador:
         else:
             print("A rodada continua.")
             print(f"Vez do próximo jogador.")
+        print()
+
+    def play_match(self, match):
+        print("Iniciando partida.")
+        print("Placar da partida:")
+        print(f"Equipe 1: {match.game.score[Pair.PAIR_ONE_ID]}")
+        print(f"Equipe 2: {match.game.score[Pair.PAIR_TWO_ID]}")
+        print()
+
+        while not match.is_over():
+            for player in match.players:
+                self.play_player(player, match)
+
+        print("A partida acabou.")
+        print(f"Vencedor da partida: {match.winner.name}")
+        print("Placar da partida:")
+        print(f"Equipe 1: {match.game.score[Pair.PAIR_ONE_ID]}")
+        print(f"Equipe 2: {match.game.score[Pair.PAIR_TWO_ID]}")
+        print()
+
+        print("Iniciando nova partida.")
         print()
 
 class TrucoJogarCartas:
@@ -177,17 +204,14 @@ class TrucoRodadas:
 class TrucoPlacar:
     def __init__(self, master, score):
         self.master = master
+        self.score = score
+        self.player_names = []
+        self.players = [Player(name) for name in self.player_names]
         master.title("Truco Game - Placar")
 
-        self.score = score
-
-        self.label_score = tk.Label(master, text="Placar:", font=("times", 15), fg="red")
-        self.label_score.pack()
-
-        self.label_score = tk.Label(master, text=f"Placar: {score[Pair.PAIR_ONE_ID]} x {score[Pair.PAIR_TWO_ID]}", font=("times", 15
-), fg="red")
-        self.label_score.pack()
-
+    def start_game(self):
+        self.players = [Player(name) for name in self.player_names]
+        game = TestGame()
 
 if __name__ == "__main__":
     root = tk.Tk()

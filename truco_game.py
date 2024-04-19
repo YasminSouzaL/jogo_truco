@@ -239,3 +239,171 @@ class Pair:
 
     players = {}.fromkeys(['player1','player2'],'player')
 
+
+class Player:
+    def __init__(self, name):
+        self.name = name
+        self.hand = hand = Hand([])
+
+    def set_hand(self, hand):
+        self.hand = hand
+
+    def __str__(self):
+        return self.name
+    
+class Match:
+
+    def __init__(self, players):
+        self.players = players
+        self.round_cards = {Pair.PAIR_ONE_ID: [], Pair.PAIR_TWO_ID: []}
+        self.winner = None
+
+    def play_card(self, player, card):
+        if player in self.players:
+            self.round_cards[player].append(card)
+        else:
+            raise Exception("Jogador não pertence a partida")
+
+    def is_over(self):
+        return len(self.round_cards[Pair.PAIR_ONE_ID]) == 3 and len(self.round_cards[Pair.PAIR_TWO_ID]) == 3
+
+    def check_winner(self):
+        card_check = CardCheck(self.round_cards)
+        self.winner = card_check.get_winner()
+
+    def __str__(self):
+        return f"Vencedor da rodada: {self.winner.name}"
+
+
+class TestGame:
+    def __init__(self):
+        self.current_match = None
+        self.score = {Pair.PAIR_ONE_ID: 0, Pair.PAIR_TWO_ID: 0}
+
+    def start_match(self, players):
+        self.current_match = Match(players)
+
+    def end_match(self):
+        self.current_match.check_winner()
+        self.score[self.current_match.winner] += 1
+
+    def __str__(self):
+        return f"Placar da partida: Equipe 1: {self.score[Pair.PAIR_ONE_ID]}, Equipe 2: {self.score[Pair.PAIR_TWO_ID]}"
+    
+class Game:
+    def __init__(self):
+        self.players = []
+        self.deck = Deck.get_instance()
+        self.current_match = None
+        self.score = {Pair.PAIR_ONE_ID: 0, Pair.PAIR_TWO_ID: 0}
+
+    def start_match(self):
+        self.current_match = Match(self.players)
+
+    def end_match(self):
+        self.current_match.check_winner()
+        self.score[self.current_match.winner] += 1
+
+    def __str__(self):
+        return f"Placar da partida: Equipe 1: {self.score[Pair.PAIR_ONE_ID]}, Equipe 2: {self.score[Pair.PAIR_TWO_ID]}"
+
+class Round:
+    def __init__(self, players):
+        self.players = players
+        self.round_cards = {Pair.PAIR_ONE_ID: [], Pair.PAIR_TWO_ID: []}
+        self.winner = None
+
+    def play_card(self, player, card):
+        if player in self.players:
+            self.round_cards[player].append(card)
+        else:
+            raise Exception("Jogador não pertence a partida")
+
+    def is_over(self):
+        return len(self.round_cards[Pair.PAIR_ONE_ID]) == 3 and len(self.round_cards[Pair.PAIR_TWO_ID]) == 3
+
+    def check_winner(self):
+        card_check = CardCheck(self.round_cards)
+        self.winner = card_check.get_winner()
+
+    def __str__(self):
+        return f"Vencedor da rodada: {self.winner.name}"
+    
+#MatchState, NormalMatch, TrucoMatch, SixMatch, NineMatch, TwelveMatch
+
+class MatchState:
+    def __init__(self, match):
+        self.match = match
+
+    def play_card(self, player, card):
+        self.match.play_card(player, card)
+        if self.match.is_over():
+            self.match.check_winner()
+            self.match.end_match()
+            self.match = NormalMatch(self.match.players)
+        return self.match
+
+class NormalMatch(MatchState):
+    def __init__(self, players):
+        self.players = players
+        self.round = Round(players)
+
+    def play_card(self, player, card):
+        self.round.play_card(player, card)
+        if self.round.is_over():
+            self.round.check_winner()
+            self.match.end_match()
+            self.match = NormalMatch(self.players)
+        return self.match
+
+class TrucoMatch(MatchState):
+    def __init__(self, players):
+        self.players = players
+        self.round = Round(players)
+
+    def play_card(self, player, card):
+        self.round.play_card(player, card)
+        if self.round.is_over():
+            self.round.check_winner()
+            self.match.end_match()
+            self.match = NormalMatch(self.players)
+        return self.match
+
+class SixMatch(MatchState):
+    def __init__(self, players):
+        self.players = players
+        self.round = Round(players)
+
+    def play_card(self, player, card):
+        self.round.play_card(player, card)
+        if self.round.is_over():
+            self.round.check_winner()
+            self.match.end_match()
+            self.match = NormalMatch(self.players)
+        return self.match
+
+class NineMatch(MatchState):
+    def __init__(self, players):
+        self.players = players
+        self.round = Round(players)
+
+    def play_card(self, player, card):
+        self.round.play_card(player, card)
+        if self.round.is_over():
+            self.round.check_winner()
+            self.match.end_match()
+            self.match = NormalMatch(self.players)
+        return self.match
+
+class TwelveMatch(MatchState):
+    def __init__(self, players):
+        self.players = players
+        self.round = Round(players)
+
+    def play_card(self, player, card):
+        self.round.play_card(player, card)
+        if self.round.is_over():
+            self.round.check_winner()
+            self.match.end_match()
+            self.match = NormalMatch(self.players)
+        return self.match
