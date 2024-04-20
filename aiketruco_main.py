@@ -66,24 +66,26 @@ class TrucoJogador:
         self.players = [Player(name) for name in self.player_names]
         game = TestGame(self.players)
         self.play_game(game)
+
+    def start_match(self):
+        match = Match(self.players)
+        return match
     
-   
     def play_game(self, game):
         print("Iniciando jogo.")
         print("Placar do jogo:")
         print(f"Equipe 1: {game.score[Pair.PAIR_ONE_ID]}")
         print(f"Equipe 2: {game.score[Pair.PAIR_TWO_ID]}")
         print()
-
         while not game.is_over():
             match = game.start_match()
             self.play_match(match)
 
-        print("O jogo acabou.")
-        print(f"Vencedor do jogo: {game.winner.name}")
-        print("Placar final do jogo:")
-        print(f"Equipe 1: {game.score[Pair.PAIR_ONE_ID]}")
-        print(f"Equipe 2: {game.score[Pair.PAIR_TWO_ID]}")
+            print("O jogo acabou.")
+            print(f"Vencedor do jogo: {game.winner.name}")
+            print("Placar final do jogo:")
+            print(f"Equipe 1: {game.score[Pair.PAIR_ONE_ID]}")
+            print(f"Equipe 2: {game.score[Pair.PAIR_TWO_ID]}")
 
     def play_player(self, player, match):
         print(f"Vez de {player.name} jogar.")
