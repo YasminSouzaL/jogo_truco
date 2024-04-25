@@ -273,7 +273,8 @@ class TestGame:
         self.current_match = None  # Initialize current_match in the constructor
         
     def start_match(self):
-        self.current_match = Match(self.players)  # Create a Match object when starting a match
+        match = Match(self.players)
+        return match
 
     def test_start_match(self):  # Remove "game" argument, as it's not used
         self.start_match()  # Call start_match to initiate a match

@@ -1,12 +1,22 @@
 import tkinter as tk
 from truco_game import Pair, Hand, CardCheck, Card, Player, Match
-from truco_regras import TestGame, TestMatch
+from truco_regras import TestGame
 
+
+class Match:
+    def __init__(self, players):
+        self.players = players
+        self.score = {Pair.PAIR_ONE_ID: 0, Pair.PAIR_TWO_ID: 0}
+        self.rounds = []
+        self.winner = None
+    
+    def is_over(self):
+        return self.score[Pair.PAIR_ONE_ID] == 2 or self.score[Pair.PAIR_TWO_ID] == 2
 
 class TrucoJogador:
     def __init__(self, master):
         self.master = master
-        master.title("Truco Game")
+        master.title("Truco Game - Jogadores")
 
         self.player_names = []
         self.players = []
@@ -78,14 +88,14 @@ class TrucoJogador:
         print(f"Equipe 2: {game.score[Pair.PAIR_TWO_ID]}")
         print()
         while not game.is_over():
-            match = game.start_match()
+            match = self.start_match()
             self.play_match(match)
-
-            print("O jogo acabou.")
-            print(f"Vencedor do jogo: {game.winner.name}")
-            print("Placar final do jogo:")
-            print(f"Equipe 1: {game.score[Pair.PAIR_ONE_ID]}")
-            print(f"Equipe 2: {game.score[Pair.PAIR_TWO_ID]}")
+        print("O jogo acabou.")
+        print(f"Vencedor do jogo: {game.winner.name}")
+        print("Placar do jogo:")
+        print(f"Equipe 1: {game.score[Pair.PAIR_ONE_ID]}")
+        print(f"Equipe 2: {game.score[Pair.PAIR_TWO_ID]}")
+        print()
 
     def play_player(self, player, match):
         print(f"Vez de {player.name} jogar.")
@@ -93,26 +103,32 @@ class TrucoJogador:
         for i, card in enumerate(player.hand.cards):
             print(f"{i + 1}: {card}")
         card_index = int(input("Digite o número da carta que deseja jogar: ")) - 1
+        if not player.hand.cards(card_index):
+            print("Número de carta inválido.")
+            return
         card = player.hand.cards.pop(card_index)
         match.play_card(player, card)
         print(f"{player.name} jogou {card}.")
+        
 
         if match.is_over():
             print("A rodada acabou.")
             print(f"Vencedor da rodada: {match.winner.name}")
             print("Placar da partida:")
-            print(f"Equipe 1: {match.game.score[Pair.PAIR_ONE_ID]}")
-            print(f"Equipe 2: {match.game.score[Pair.PAIR_TWO_ID]}")
+            print(f"Equipe 1: {match.score[Pair.PAIR_ONE_ID]}")
+            print(f"Equipe 2: {match.score[Pair.PAIR_TWO_ID]}")
+        
+        
         else:
             print("A rodada continua.")
             print(f"Vez do próximo jogador.")
         print()
-
+    
     def play_match(self, match):
         print("Iniciando partida.")
         print("Placar da partida:")
-        print(f"Equipe 1: {match.game.score[Pair.PAIR_ONE_ID]}")
-        print(f"Equipe 2: {match.game.score[Pair.PAIR_TWO_ID]}")
+        print(f"Equipe 1: {match.score[Pair.PAIR_ONE_ID]}")
+        print(f"Equipe 2: {match.score[Pair.PAIR_TWO_ID]}")
         print()
 
         while not match.is_over():
@@ -122,8 +138,8 @@ class TrucoJogador:
         print("A partida acabou.")
         print(f"Vencedor da partida: {match.winner.name}")
         print("Placar da partida:")
-        print(f"Equipe 1: {match.game.score[Pair.PAIR_ONE_ID]}")
-        print(f"Equipe 2: {match.game.score[Pair.PAIR_TWO_ID]}")
+        print(f"Equipe 1: {match.score[Pair.PAIR_ONE_ID]}")
+        print(f"Equipe 2: {match.score[Pair.PAIR_TWO_ID]}")
         print()
 
         print("Iniciando nova partida.")
@@ -152,7 +168,6 @@ class TrucoJogarCartas:
             cards = ["Carta 1", "Carta 2", "Carta 3"]
             for card in cards:
                 self.listbox_players.insert(tk.END, card)
-
 
 class TrucoCartas:
     def __init__(self, master, player_names):
@@ -204,10 +219,10 @@ class TrucoRodadas:
 
 
 class TrucoPlacar:
-    def __init__(self, master, score):
+    def __init__(self, master, score, player_names):
         self.master = master
         self.score = score
-        self.player_names = []
+        self.player_names = player_names
         self.players = [Player(name) for name in self.player_names]
         master.title("Truco Game - Placar")
 
@@ -233,5 +248,5 @@ if __name__ == "__main__":
     root.mainloop()
 
     root = tk.Tk()
-    my_gui = TrucoPlacar(root, [0, 0])
+    my_gui = TrucoPlacar(root, [0, 0], ["Jogador 1", "Jogador 2", "Jogador 3", "Jogador 4"])
     root.mainloop()
