@@ -8,10 +8,7 @@ def deck():
 
 @pytest.fixture
 def game():
-
-    pair1 = {'player1': Player("Emilie"), 'player2': Player("Italo")}
-    pair2 = {'player1': Player("Attany"), 'player2': Player("Keli")}
-    pairs = [pair1, pair2]
+    pairs = []
 
     game = TestGame(pairs)
     
@@ -270,11 +267,14 @@ class TestRound:
 
         assert result_winner is expected_winner
 class TestGame:
-    def __init__(self):
+    def __init__(self, players):
+        self.players  = players
+        self.score = {Pair.PAIR_ONE_ID: 0, Pair.PAIR_TWO_ID: 0}
         self.current_match = None  # Initialize current_match in the constructor
         
     def start_match(self):
-        self.current_match = Match()  # Create a Match object when starting a match
+        match = Match(self.players)
+        return match
 
     def test_start_match(self):  # Remove "game" argument, as it's not used
         self.start_match()  # Call start_match to initiate a match
@@ -283,7 +283,14 @@ class TestGame:
     def test_end_match(self):
         self.start_match()  # Start the match
         self.end_match()  # End the match
-        assert self.current_match is None  
+        assert self.current_match is None
+
+    def end_match(self):
+        self.current_match = None
+    
+    def is_over(self):
+        return self.score[Pair.PAIR_ONE_ID] >= 12 or self.score[Pair.PAIR_TWO_ID] >= 12
+
 
 class TestMatch:
 
@@ -346,6 +353,54 @@ class TestMatch:
             twelveMatch = TwelveMatch(match)
             twelveMatch.raise_match()
             result_points = match.state.get_points()
+
+class TestPair:
+        @pytest.fixture
+        def pair(self):
+            pair = Pair("pair_one", "player1", "player2")
+    
+            return pair
+    
+        def test_get_points(self, pair):
+            pair.points = 5
+            result = pair.get_points()
+            expected = 5
+    
+            assert result == expected
+    
+        def test_get_points_with_no_points(self, pair):
+            result = pair.get_points()
+            expected = 0
+    
+            assert result == expected
+    
+        def test_get_points_with_negative_points(self, pair):
+            pair.points = -5
+            result = pair.get_points()
+            expected = 0
+    
+            assert result == expected
+    
+        def test_get_points_with_points_greater_than_twelve(self, pair):
+            pair.points = 15
+            result = pair.get_points()
+            expected = 12
+    
+            assert result == expected
+    
+        def test_get_points_with_points_equal_to_twelve(self, pair):
+            pair.points = 12
+            result = pair.get_points()
+            expected = 12
+    
+            assert result == expected
+    
+        def test_get_points_with_points_less_than_twelve(self, pair):
+            pair.points = 10
+            result = pair.get_points()
+            expected = 10
+    
+            assert result == expected
 
 
     

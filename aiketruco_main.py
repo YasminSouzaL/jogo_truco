@@ -1,20 +1,31 @@
 import tkinter as tk
-from truco_game import Match, Player, Pair, Hand, Card, Game, Match # Importando as classes Match, Player, Pair, Hand, Card e Game do truco_game
-from truco_regras import TestGame  # Importando a classe Game do truco_test
+from truco_game import Pair, Hand, CardCheck, Card, Player, Match
+from truco_regras import TestGame
 
-class TrucoJogo:
+
+class Match:
+    def __init__(self, players):
+        self.players = players
+        self.score = {Pair.PAIR_ONE_ID: 0, Pair.PAIR_TWO_ID: 0}
+        self.rounds = []
+        self.winner = None
+    
+    def is_over(self):
+        return self.score[Pair.PAIR_ONE_ID] == 2 or self.score[Pair.PAIR_TWO_ID] == 2
+
+class TrucoJogador:
     def __init__(self, master):
         self.master = master
-        master.title("Truco Game")
+        master.title("Truco Game - Jogadores")
 
         self.player_names = []
-        self.players = []  # Lista para armazenar os jogadores
+        self.players = []
 
-        self.label = tk.Label(master, text="Digite os nomes dos jogadores (mínimo 2):", font=("times", 15), fg="red")
-        self.label.pack()
+        self.player_name_label = tk.Label(master, text="Digite o nome dos jogadores (mínimo 2):", font=("times", 15), fg="red")
+        self.player_name_label.pack()
 
-        self.entry = tk.Entry(master)
-        self.entry.pack()
+        self.player_name_entry = tk.Entry(master)
+        self.player_name_entry.pack()
 
         self.add_button = tk.Button(master, text="Adicionar Jogador", command=self.add_player)
         self.add_button.pack()
@@ -22,107 +33,125 @@ class TrucoJogo:
         self.remove_button = tk.Button(master, text="Remover Jogador", command=self.remove_player)
         self.remove_button.pack()
 
-        self.label_players = tk.Label(master, text="Jogadores adicionados:", font=("times", 15), fg="red")
-        self.label_players.pack()
+        self.player_list_label = tk.Label(master, text="Jogadores adicionados:", font=("times", 15), fg="red")
+        self.player_list_label.pack()
 
-        self.listbox_players = tk.Listbox(master)
-        self.listbox_players.pack()
+        self.player_listbox = tk.Listbox(master)
+        self.player_listbox.pack()
 
         self.start_button = tk.Button(master, text="Iniciar Jogo", command=self.start_game)
         self.start_button.pack()
 
     def add_player(self):
-        player_name = self.entry.get()
+        player_name = self.player_name_entry.get()
         if player_name not in self.player_names:
             self.player_names.append(player_name)
-            self.entry.delete(0, tk.END)
-            self.listbox_players.insert(tk.END, player_name)  
+            self.player_name_entry.delete(0, tk.END)
+            self.show_players()
             print(f"Jogador {player_name} adicionado")
         else:
-            print(f"O jogador {player_name} já está na lista.")
+            print(f"Jogador {player_name} já adicionado")
+
 
     def remove_player(self):
-        player_name = self.entry.get()
+        player_name = self.player_name_entry.get()
         if player_name in self.player_names:
             self.player_names.remove(player_name)
-            self.entry.delete(0, tk.END)
+            self.player_name_entry.delete(0, tk.END)
             self.show_players()
             print(f"Jogador {player_name} removido")
         else:
             print(f"Jogador {player_name} não encontrado")
 
     def show_players(self):
-        self.listbox_players.delete(0, tk.END)
+        self.player_listbox.delete(0, tk.END)
         for player in self.player_names:
-            self.listbox_players.insert(tk.END, player)
+            self.player_listbox.insert(tk.END, player)
 
     def start_game(self):
-        if len(self.player_names) >= 2:
-            self.players = [Player(name, Hand([])) for name in self.player_names]  # Passa uma mão vazia para cada jogador
-            game = TestGame()  # Instanciando a classe Game do truco_test
-            self.play_game(game)
-            self.master.destroy()
-        else:
-            print("É necessário adicionar pelo menos dois jogadores para iniciar o jogo.")
+        if len(self.player_names) < 2:
+            print("Número de jogadores insuficiente.")
+            return
 
+        self.players = [Player(name) for name in self.player_names]
+        game = TestGame(self.players)
+        self.play_game(game)
 
+    def start_match(self):
+        match = Match(self.players)
+        return match
+    
     def play_game(self, game):
-        while True:
-            match = game.current_match
-            match = Match(game)  # Inicialize a instância de Match aqui
-            for player in self.players:
-                self.play_player(player, match)
-
-            end_game = game.score[Pair.PAIR_ONE_ID] >= 12 or game.score[Pair.PAIR_TWO_ID] >= 12
-
-            if end_game:
-                break
-
-        print("\t\t Fim do jogo!\n")
-        print("Placar final: " + str(game.score[Pair.PAIR_ONE_ID]) + " x " + str(game.score[Pair.PAIR_TWO_ID]) + "\n")
+        print("Iniciando jogo.")
+        print("Placar do jogo:")
+        print(f"Equipe 1: {game.score[Pair.PAIR_ONE_ID]}")
+        print(f"Equipe 2: {game.score[Pair.PAIR_TWO_ID]}")
+        print()
+        while not game.is_over():
+            match = self.start_match()
+            self.play_match(match)
+        print("O jogo acabou.")
+        print(f"Vencedor do jogo: {game.winner.name}")
+        print("Placar do jogo:")
+        print(f"Equipe 1: {game.score[Pair.PAIR_ONE_ID]}")
+        print(f"Equipe 2: {game.score[Pair.PAIR_TWO_ID]}")
+        print()
 
     def play_player(self, player, match):
-        while True:
-            print("\nVez de " + player.player_name + "\n")
+        print(f"Vez de {player.name} jogar.")
+        print("Cartas disponíveis:")
+        for i, card in enumerate(player.hand.cards):
+            print(f"{i + 1}: {card}")
+        card_index = int(input("Digite o número da carta que deseja jogar: ")) - 1
+        if not player.hand.cards(card_index):
+            print("Número de carta inválido.")
+            return
+        card = player.hand.cards.pop(card_index)
+        match.play_card(player, card)
+        print(f"{player.name} jogou {card}.")
+        
 
-            if player.hand is None:
-                print("Erro: Mão do jogador não está inicializada.")
-                return  # Exit the function if there's no hand
+        if match.is_over():
+            print("A rodada acabou.")
+            print(f"Vencedor da rodada: {match.winner.name}")
+            print("Placar da partida:")
+            print(f"Equipe 1: {match.score[Pair.PAIR_ONE_ID]}")
+            print(f"Equipe 2: {match.score[Pair.PAIR_TWO_ID]}")
+        
+        
+        else:
+            print("A rodada continua.")
+            print(f"Vez do próximo jogador.")
+        print()
+    
+    def play_match(self, match):
+        print("Iniciando partida.")
+        print("Placar da partida:")
+        print(f"Equipe 1: {match.score[Pair.PAIR_ONE_ID]}")
+        print(f"Equipe 2: {match.score[Pair.PAIR_TWO_ID]}")
+        print()
 
-            indexes = []
-            for index, card in enumerate(player.hand.cards):
-                indexes.append(index + 1)
-                print(str(index + 1) + " - " + str(card))
+        while not match.is_over():
+            for player in match.players:
+                self.play_player(player, match)
 
-            while True:
-                card_input = input("\nEscolha o número correspondente à carta que deseja jogar: ")
+        print("A partida acabou.")
+        print(f"Vencedor da partida: {match.winner.name}")
+        print("Placar da partida:")
+        print(f"Equipe 1: {match.score[Pair.PAIR_ONE_ID]}")
+        print(f"Equipe 2: {match.score[Pair.PAIR_TWO_ID]}")
+        print()
 
-                try:
-                    card = int(card_input)
-                    card_index = card - 1  # Convertendo para o índice da lista de cartas
-                    if 0 <= card_index < len(player.hand.cards):
-                        player.throw_card(match=match, card_position=card_index)
-                        break
-                    else:
-                        print("Erro: Número fora da faixa válida. Por favor, tente novamente.")
-                except ValueError:
-                    print("Erro: Entrada inválida. Por favor, digite um número inteiro.")
+        print("Iniciando nova partida.")
+        print()
 
-            players = self.players
-            for player in players:
-                player.hand = None
-
-            print("\n" + match.winner.player_name + " venceu a rodada!\n")
-            print("Placar: " + str(game.score[Pair.PAIR_ONE_ID]) + " x " + str(game.score[Pair.PAIR_TWO_ID]) + "\n")
-
-
-class TrucoCartas:
+class TrucoJogarCartas:
     def __init__(self, master, player_names):
         self.master = master
-        master.title("Truco Game - Cartas")
+        master.title("Truco Game - Jogar Cartas")
 
         self.player_names = player_names
-        self.players = []  # Lista para armazenar os jogadores
+        self.players = []
 
         self.label_cards = tk.Label(master, text="Cartas de cada jogador:", font=("times", 15), fg="red")
         self.label_cards.pack()
@@ -136,16 +165,89 @@ class TrucoCartas:
         self.listbox_players.delete(0, tk.END)
         for player_name in self.player_names:
             self.listbox_players.insert(tk.END, f"Cartas de {player_name}:")
-            # Simulando cartas aleatórias para cada jogador
             cards = ["Carta 1", "Carta 2", "Carta 3"]
             for card in cards:
                 self.listbox_players.insert(tk.END, card)
 
+class TrucoCartas:
+    def __init__(self, master, player_names):
+        self.master = master
+        master.title("Truco Game - Cartas")
 
-def main():
-    root = tk.Tk()
-    app = TrucoJogo(root)
-    root.mainloop()
+        self.player_names = player_names
+        self.players = []
+
+        self.label_cards = tk.Label(master, text="Cartas de cada jogador:", font=("times", 15), fg="red")
+        self.label_cards.pack()
+
+        self.listbox_players = tk.Listbox(master)
+        self.listbox_players.pack()
+
+        self.show_cards()
+
+    def show_cards(self):
+        self.listbox_players.delete(0, tk.END)
+        for player_name in self.player_names:
+            self.listbox_players.insert(tk.END, f"Cartas de {player_name}:")
+            cards = ["Carta 1", "Carta 2", "Carta 3"]
+            for card in cards:
+                self.listbox_players.insert(tk.END, card)
+
+class TrucoRodadas:
+    def __init__(self, master, player_names):
+        self.master = master
+        master.title("Truco Game - Rodadas")
+
+        self.player_names = player_names
+        self.players = []
+
+        self.label_rounds = tk.Label(master, text="Rodadas de cada jogador:", font=("times", 15), fg="red")
+        self.label_rounds.pack()
+
+        self.listbox_players = tk.Listbox(master)
+        self.listbox_players.pack()
+
+        self.show_rounds()
+
+    def show_rounds(self):
+        self.listbox_players.delete(0, tk.END)
+        for player_name in self.player_names:
+            self.listbox_players.insert(tk.END, f"Rodadas de {player_name}:")
+            rounds = ["Rodada 1", "Rodada 2", "Rodada 3"]
+            for round in rounds:
+                self.listbox_players.insert(tk.END, round)
+
+
+class TrucoPlacar:
+    def __init__(self, master, score, player_names):
+        self.master = master
+        self.score = score
+        self.player_names = player_names
+        self.players = [Player(name) for name in self.player_names]
+        master.title("Truco Game - Placar")
+
+    def start_game(self):
+        self.players = [Player(name) for name in self.player_names]
+        game = TestGame()
 
 if __name__ == "__main__":
-    main()
+    root = tk.Tk()
+    my_gui = TrucoJogador(root)
+    root.mainloop()
+
+    root = tk.Tk()
+    my_gui = TrucoJogarCartas(root, ["Jogador 1", "Jogador 2", "Jogador 3", "Jogador 4"])
+    root.mainloop()
+
+    root = tk.Tk()
+    my_gui = TrucoCartas(root, ["Jogador 1", "Jogador 2", "Jogador 3", "Jogador 4"])
+    root.mainloop()
+
+    root = tk.Tk()
+    my_gui = TrucoRodadas(root, ["Jogador 1", "Jogador 2", "Jogador 3", "Jogador 4"])
+    root.mainloop()
+
+    root = tk.Tk()
+    my_gui = TrucoPlacar(root, [0, 0], ["Jogador 1", "Jogador 2", "Jogador 3", "Jogador 4"])
+    root.mainloop()
+
