@@ -250,3 +250,4 @@ if __name__ == "__main__":
     root = tk.Tk()
     my_gui = TrucoPlacar(root, [0, 0], ["Jogador 1", "Jogador 2", "Jogador 3", "Jogador 4"])
     root.mainloop()
+
