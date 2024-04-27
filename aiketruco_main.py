@@ -47,6 +47,7 @@ class TrucoJogador:
             print(f"Jogador {player_name} já adicionado")
 
 
+
     def remove_player(self):
         player_name = self.player_name_entry.get()
         if player_name in self.player_names:
