@@ -1,3 +1,4 @@
+#Author : Yasmin Souza-8764
 import tkinter as tk
 from truco_game import Pair, Hand, Player, Match, Game
 from truco_regras import TestGame
@@ -110,26 +111,26 @@ class TrucoJogarCartas:
                 for card in cards:
                     self.listbox_players.insert(tk.END, card)
 
-
-
     def play_player(self):
+        if self.listbox_players.curselection() == ():  # Check for selection before accessing curselection
+            print("Selecione uma carta para jogar.")
+            return
+
         player_index = int(self.spinbox.get()) - 1
         if player_index < 0 or player_index >= len(self.player_names):
             print("Jogador inválido.")
             return
 
-        # Check for selection
-        if not self.listbox_players.curselection():
-            print("Selecione uma carta para jogar.")
-            return
+        # Store selected card information in a separate variable
+        selected_card_index = self.listbox_players.curselection()[0]
+        selected_card_text = self.listbox_players.get(selected_card_index)
 
-        # Get selected card index
-        card_index = self.listbox_players.curselection()[0]
-        player_name = self.player_names[player_index]
-        card = self.player_cards[player_index][card_index]
-        print(f"Jogador {player_name} jogou a carta {card}.")
+        # Print and process the selected card
+        print(f"Jogador {self.player_names[player_index]} jogou a carta {selected_card_text}")
 
-        # Implement logic to update game state based on played card (not shown here)
+        # Update the listbox after removing the played card
+        self.listbox_players.delete(selected_card_index)
+        self.show_cards()
 
 '''
 A começa tela de adicionar jogadores, onde o usuário pode adicionar e remover jogadores. depois clicar no botão "Iniciar Jogo" para ir para a tela de jogar cartas. A tela de jogar cartas mostra as cartas de cada jogador e permite que o usuário selecione uma carta para jogar. A lógica para atualizar o estado do jogo com base na carta jogada não é mostrada aqui, mas pode ser implementada no método play_player. A lógica do jogo pode ser implementada em uma classe separada, como TestGame, e instanciada na função start_game.
