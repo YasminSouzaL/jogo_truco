@@ -5,6 +5,7 @@ class TrucoJogador:
     # Classe para a tela de adicionar e remover jogadores e ir para a tela de jogar cartas
     def __init__(self, master):
         self.master = master
+        self.frame = tk.Frame(self.master)
         
         master.title("Truco Game - Jogadores")
         self.players = []
@@ -102,10 +103,12 @@ class TrucoJogarCartas:
     def show_cards(self):
         self.listbox_players.delete(0, tk.END)
         for player_name in self.player_names:
-            self.listbox_players.insert(tk.END, f"Cartas de {player_name}:")
-            cards = self.player_cards[self.player_names.index(player_name)]
-            for card in cards:
-                self.listbox_players.insert(tk.END, card)
+            player_index = self.player_names.index(player_name)
+            if player_index < len(self.player_cards):  # Adicione esta linha
+                self.listbox_players.insert(tk.END, f"Cartas de {player_name}:")
+                cards = self.player_cards[player_index]
+                for card in cards:
+                    self.listbox_players.insert(tk.END, card)
 
 
 
