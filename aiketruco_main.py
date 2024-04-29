@@ -110,32 +110,37 @@ class TrucoJogarCartas:
                 cards = self.player_cards[player_index]
                 for card in cards:
                     self.listbox_players.insert(tk.END, card)
+        self.listbox_players.bind("<Double-Button-1>", self.play_player)
+        self.listbox_players.pack()
+
+    def on_card_select(self, evt):
+        w = evt.widget
+        index = int(w.curselection()[0])
+        value = w.get(index)
+        print('You selected item %d: "%s"' % (index, value))
 
     def play_player(self):
-        if self.listbox_players.curselection() == ():  # Check for selection before accessing curselection
-            print("Selecione uma carta para jogar.")
-            return
-
-        player_index = int(self.spinbox.get()) - 1
-        if player_index < 0 or player_index >= len(self.player_names):
-            print("Jogador inválido.")
-            return
-
-        # Store selected card information in a separate variable
-        selected_card_index = self.listbox_players.curselection()[0]
-        selected_card_text = self.listbox_players.get(selected_card_index)
-
-        # Print and process the selected card
-        print(f"Jogador {self.player_names[player_index]} jogou a carta {selected_card_text}")
-
-        # Update the listbox after removing the played card
-        self.listbox_players.delete(selected_card_index)
+        player_index = self.listbox_players.curselection()[0]
+        player_name = self.player_names[player_index]
+        card_index = int(self.spinbox.get()) - 1
+        card = self.player_cards[player_index][card_index]
+        print(f"{player_name} jogou a carta {card}")
+        self.player_cards[player_index].remove(card)
         self.show_cards()
+        if len(self.player_cards[player_index]) == 0:
+            print(f"O jogador {player_name} não tem mais cartas.")
+            self.player_names.remove(player_name)
+            self.player_cards.pop(player_index)
+            self.show_cards()
+            if len(self.player_names) == 1:
+                print(f"O jogador {self.player_names[0]} venceu o jogo.")
+                self.master.destroy()
+                return
+        print(f"Próximo jogador: {self.player_names[0]}")
+        self.listbox_players.selection_clear(0, tk.END)
+        self.spinbox.delete(0, tk.END)
+        self.spinbox.insert(0, 1)
 
-'''
-A começa tela de adicionar jogadores, onde o usuário pode adicionar e remover jogadores. depois clicar no botão "Iniciar Jogo" para ir para a tela de jogar cartas. A tela de jogar cartas mostra as cartas de cada jogador e permite que o usuário selecione uma carta para jogar. A lógica para atualizar o estado do jogo com base na carta jogada não é mostrada aqui, mas pode ser implementada no método play_player. A lógica do jogo pode ser implementada em uma classe separada, como TestGame, e instanciada na função start_game.
-Abre a tela de jogar cartas com os jogadores e suas cartas, e permite que o usuário selecione uma carta para jogar. A lógica para atualizar o estado do jogo com base na carta jogada pode ser implementada no método play_player.
-'''
 if __name__ == "__main__":
     root = tk.Tk()
     my_gui = TrucoJogador(root)

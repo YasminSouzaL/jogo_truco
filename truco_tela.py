@@ -226,3 +226,59 @@ class TrucoJogarCartas:
         print(f"Carta jogada pelo jogador {player_name}.")
 
 '''
+
+'''
+class TrucoRodadas:
+    def __init__(self, master, player_names, player_cards):
+        self.master = master
+        master.title("Truco Game - Rodadas")
+
+        self.player_names = player_names
+        self.player_cards = player_cards
+
+        self.label_players = tk.Label(master, text="Cartas de cada jogador:", font=("times", 15), fg="red")
+        self.label_players.pack()
+
+        self.listbox_players = tk.Listbox(master)
+        self.listbox_players.pack()
+
+        self.show_cards()
+
+        self.spinbox = tk.Spinbox(master, from_=1, to=3, width=55, font=("times", 15))
+        self.spinbox.pack()
+
+        self.play_button = tk.Button(master, text="Jogar Carta", command=self.play_player)
+        self.play_button.pack()
+    
+    def show_cards(self):
+        self.listbox_players.delete(0, tk.END)
+        for player_name in self.player_names:
+            player_index = self.player_names.index(player_name)
+            if player_index < len(self.player_cards):  
+                self.listbox_players.insert(tk.END, f"Cartas de {player_name}:")
+                cards = self.player_cards[player_index]
+                for card in cards:
+                    self.listbox_players.insert(tk.END, card)
+        
+    def play_player(self):
+        if self.listbox_players.curselection() == ():  
+            print("Selecione uma carta para jogar.")
+            return
+
+        player_index = int(self.spinbox.get()) - 1
+        if player_index < 0 or player_index >= len(self.player_names):
+            print("Jogador inválido.")
+            return
+
+        # Armazena informações da carta selecionada em uma variável separada
+        selected_card_index = self.listbox_players.curselection()[0]
+        selected_card_text = self.listbox_players.get(selected_card_index)
+
+        # Mostra a carta selecionada e o jogador que jogou a carta
+        print(f"Jogador {self.player_names[player_index]} jogou a carta {selected_card_text}")
+
+        # A caixa de listagem após remover a carta jogada
+        self.listbox_players.delete(selected_card_index)
+        self.show_cards()
+
+'''
