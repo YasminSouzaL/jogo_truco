@@ -94,8 +94,13 @@ class Deck:
 class Hand:
     """ Represents the player hand """
 
-    def __init__(self, cards):
+    def __init__(self, cards=None):
+        if cards is None:
+            cards = []
         self.cards = cards
+
+    def add_card(self, card):
+        self.cards.append(card)
 
     def throw_card(self, card_position=0):
 
@@ -121,6 +126,10 @@ class Hand:
         for card in self.cards:
             cards_str += str(card) + ", "
         return cards_str
+    
+    def deal_cards(self):
+        deck = Deck.get_instance()
+        self.cards = deck.deal(3)
 
 
 class CardCheck:
