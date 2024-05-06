@@ -79,7 +79,7 @@ class TrucoJogador:
             app = TrucoJogarCartas(cartas_screen, self.player_names, self.player_cards)
 
 
-def on_card_select(self, event):
+def on_card_select(event):
     print("on_card_select called")  # Add this line
     widget = event.widget
     selection = widget.curselection()
@@ -115,6 +115,8 @@ class TrucoJogarCartas:
         else:
             print("Nenhum jogador adicionado")
 
+    ''' Esse metodo é chamado quando o jogador clica em uma carta para jogar, a partir do Spinbox 
+    que contém as cartas do jogador.'''
     def show_cards(self):
         self.listbox_players.delete(0, tk.END)
         for player_index in range(len(self.player_names)):
@@ -129,6 +131,8 @@ class TrucoJogarCartas:
             if not cards:
                 print(f"No cards for player {player_name}")
 
+    '''Ese metodo é chamado quando o jogador clica no botão "Jogar Carta" para jogar uma carta.
+    O jogador seleciona a carta que deseja jogar a partir do Spinbox que contém as cartas do jogador.'''
     def play_player(self):
         if self.listbox_players.curselection():  # Check if a card is selected
             player_index = self.listbox_players.curselection()[0]

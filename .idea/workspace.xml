@@ -5,8 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0d3de13a-85c1-48aa-aff0-a5caf3502bfd" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/aiketruco_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/aiketruco_main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/antigatela.py" beforeDir="false" afterPath="$PROJECT_DIR$/antigatela.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,6 +98,10 @@
       <workItem from="1714654394346" duration="730000" />
       <workItem from="1714655361343" duration="4007000" />
       <workItem from="1714660821562" duration="244000" />
+      <workItem from="1715013449762" duration="522000" />
+      <workItem from="1715013986294" duration="27000" />
+      <workItem from="1715014156888" duration="22000" />
+      <workItem from="1715014187070" duration="50000" />
     </task>
     <servers />
   </component>
@@ -116,6 +120,6 @@
     </option>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/jogo_truco$aiketruco_main.coverage" NAME="aiketruco_main Coverage Results" MODIFIED="1714660910907" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/jogo_truco$aiketruco_main.coverage" NAME="aiketruco_main Coverage Results" MODIFIED="1715013321631" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
