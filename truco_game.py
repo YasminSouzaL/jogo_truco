@@ -27,8 +27,6 @@ class Card:
 
 
 class Deck:
-    """Singleton Pool class for Deck"""
-
     CARDS_QUANTITY = 40
     instance = None
 
@@ -60,7 +58,6 @@ class Deck:
             self.cards.append(card)
 
     def shuffle(self):
-        self.__check_deck()
         random.shuffle(self.cards)
 
     def __check_deck(self):
@@ -89,6 +86,12 @@ class Deck:
         for _ in range(quantity):
             cards.append(self.get_top_card())
         return cards
+
+    def draw_card(self):
+        if len(self.cards) == 0:
+            self.shuffle()  # Reshuffle deck when empty (optional)
+            return "Baralho vazio (Deck reshuffled)"  # Optional warning message
+        return self.cards.pop()
 
 
 class Hand:

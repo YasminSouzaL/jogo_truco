@@ -1,9 +1,10 @@
 # Author : Yasmin Souza-8764
 import tkinter as tk
+from random import shuffle
+from tkinter import Listbox
 
-from truco_regras import TestGame
-
-
+from truco_regras import TestDeck
+from truco_game import Deck
 class TrucoJogador:
     # Classe para a tela de adicionar e remover jogadores e ir para a tela de jogar cartas
     def __init__(self, master):
@@ -65,19 +66,13 @@ class TrucoJogador:
         for player in self.player_names:
             self.player_listbox.insert(tk.END, player)
 
-    def start_game(self, test=False, player_names=None):
-        if test:
-            test_game = TestGame(player_names)
-            test_game.play()
-        else:
-            if len(self.player_names) < 2:
-                print("Adicione pelo menos 2 jogadores para iniciar o jogo.")
-                return
-
+    def start_game(self):
+        if len(self.player_names) >= 2:
             self.master.withdraw()
             cartas_screen = tk.Toplevel(self.master)
-            app = TrucoJogarCartas(cartas_screen, self.player_names, self.player_cards)
-
+            app = TrucoJogarCartas(cartas_screen, self, self.player_names)
+        else:
+            print("Adicione pelo menos 2 jogadores")
 
 def on_card_select(event):
     print("on_card_select called")  # Add this line
@@ -89,50 +84,51 @@ def on_card_select(event):
     else:
         print("No item selected")
 
-
 class TrucoJogarCartas:
-    def __init__(self, master, player_names, player_cards):
-        if player_names:
-            self.master = master
-            master.title("Truco Game - Jogar Cartas")
 
-            self.player_names = player_names
-            self.player_cards = player_cards
+    # Classe para a tela de jogar cartas
+    def __init__(self, master, previous_screen, player_names, player_cards=None):
+        self.master = master
+        self.previous_screen = previous_screen
+        self.player_names = player_names
+        self.deck = Deck()
+        self.deck.shuffle()
+        self.player_cards = self.generate_player_cards()
 
-            self.label_players = tk.Label(master, text="Cartas de cada jogador:", font=("times", 15), fg="red")
-            self.label_players.pack()
+        master.title("Truco Game - Jogar Cartas")
 
-            self.listbox_players = tk.Listbox(master)
-            self.listbox_players.pack()
+        self.label_players = tk.Label(master, text="Cartas de cada jogador:", font=("times", 15), fg="red")
+        self.label_players.pack()
 
-            self.show_cards()  # Call show_cards before binding the event
+        self.listbox_players = tk.Listbox(master)
+        self.listbox_players.pack()
 
-            self.spinbox = tk.Spinbox(master, from_=1, to=3, width=55, font=("times", 15))
-            self.spinbox.pack()
+        self.show_cards()  # Call show_cards before binding the event
 
-            self.play_button = tk.Button(master, text="Jogar Carta", command=self.play_player)
-            self.play_button.pack()
-        else:
-            print("Nenhum jogador adicionado")
+        self.spinbox = tk.Spinbox(master, from_=1, to=3, width=55, font=("times", 15))
+        self.spinbox.pack()
 
-    ''' Esse metodo é chamado quando o jogador clica em uma carta para jogar, a partir do Spinbox 
-    que contém as cartas do jogador.'''
+        self.play_button = tk.Button(master, text="Jogar Carta", command=self.play_player)
+        self.play_button.pack()
+
+    def generate_player_cards(self):
+        # Assuming each player gets 3 cards
+        player_cards = {}
+        for player in self.player_names:
+            player_cards[player] = [self.deck.draw_card() for _ in range(3)]
+        return player_cards
+
     def show_cards(self):
         self.listbox_players.delete(0, tk.END)
-        for player_index in range(len(self.player_names)):
-            if player_index >= len(self.player_cards):
-                continue
-            player_name = self.player_names[player_index]
+        for player_name in self.player_names:
             self.listbox_players.insert(tk.END, f"Cartas de {player_name}:")
-            cards = self.player_cards[player_index]
+            cards = self.player_cards[player_name]  # Use player_name instead of player_index
             for card in cards:
                 self.listbox_players.insert(tk.END, card)
             # Add a check to see if the cards are being added
             if not cards:
-                print(f"No cards for player {player_name}")
+                print(f"Sem cartas para o jogador {player_name}")
 
-    '''Ese metodo é chamado quando o jogador clica no botão "Jogar Carta" para jogar uma carta.
-    O jogador seleciona a carta que deseja jogar a partir do Spinbox que contém as cartas do jogador.'''
     def play_player(self):
         if self.listbox_players.curselection():  # Check if a card is selected
             player_index = self.listbox_players.curselection()[0]
@@ -141,24 +137,6 @@ class TrucoJogarCartas:
             card = self.player_cards[player_index][int(card_index) - 1]
             print(f"Jogador {player_name} jogou a carta {card}")
             self.player_cards[player_index].remove(card)
-            self.show_cards()
-            if len(self.player_cards[player_index]) == 0:
-                print(f"Jogador {player_name} não tem mais cartas")
-                self.player_names.remove(player_name)
-                self.player_cards.pop(player_index)
-                self.show_cards()
-                if len(self.player_names) == 1:
-                    print(f"Jogador {self.player_names[0]} ganhou o jogo!")
-                    self.master.withdraw()
-                    cartas_screen = tk.Toplevel(self.master)
-                    app = TrucoJogarCartas(cartas_screen, self.player_names, self.player_cards)
-                else:
-                    print("Próximo jogador")
-            else:
-                print(f"Próximo jogador")
-        else:
-            print("Selecione uma carta para jogar.")
-            return
 
 
 if __name__ == "__main__":

@@ -1,5 +1,5 @@
 import tkinter as tk
-from truco_game import Player, Game
+
 
 class TrucoJogador:
     def __init__(self, master):
@@ -60,6 +60,7 @@ class TrucoJogador:
         else:
             print("É necessário adicionar pelo menos dois jogadores para continuar.")
 
+
 class TrucoCartas:
     def __init__(self, master, player_names):
         self.master = master
@@ -85,13 +86,16 @@ class TrucoCartas:
             for card in cards:
                 self.listbox_players.insert(tk.END, card)
 
+
 def main():
     root = tk.Tk()
     app = TrucoJogador(root)
     root.mainloop()
 
+
 if __name__ == "__main__":
     main()
+
 '''
 class TrucoCartas:
     
