@@ -4,7 +4,9 @@ from random import shuffle
 from tkinter import Listbox
 
 from truco_regras import TestDeck
-from truco_game import Deck
+from truco_game import Deck, CardCheck, Pair
+
+
 class TrucoJogador:
     # Classe para a tela de adicionar e remover jogadores e ir para a tela de jogar cartas
     def __init__(self, master):
@@ -43,13 +45,13 @@ class TrucoJogador:
 
     def add_player(self):
         player_name = self.player_name_entry.get()
-        if player_name not in self.player_names:
+        if player_name and player_name not in self.player_names:
             self.player_names.append(player_name)
             self.player_name_entry.delete(0, tk.END)
             self.show_players()
             print(f"Jogador {player_name} adicionado")
         else:
-            print(f"Jogador {player_name} já adicionado")
+            print(f"Jogador {player_name} já adicionado ou nome inválido")
 
     def remove_player(self):
         player_name = self.player_name_entry.get()
@@ -74,8 +76,8 @@ class TrucoJogador:
         else:
             print("Adicione pelo menos 2 jogadores")
 
+
 def on_card_select(event):
-    print("on_card_select called")  # Add this line
     widget = event.widget
     selection = widget.curselection()
     if selection:  # Check if the selection is not empty
@@ -84,8 +86,8 @@ def on_card_select(event):
     else:
         print("No item selected")
 
-class TrucoJogarCartas:
 
+class TrucoJogarCartas:
     # Classe para a tela de jogar cartas
     def __init__(self, master, previous_screen, player_names, player_cards=None):
         self.master = master
@@ -94,6 +96,9 @@ class TrucoJogarCartas:
         self.deck = Deck()
         self.deck.shuffle()
         self.player_cards = self.generate_player_cards()
+        self.current_player_index = 0
+        self.round_cards = {player_name: [] for player_name in player_names}
+        self.player_scores = {player_name: 0 for player_name in player_names}
 
         master.title("Truco Game - Jogar Cartas")
 
@@ -103,16 +108,15 @@ class TrucoJogarCartas:
         self.listbox_players = tk.Listbox(master)
         self.listbox_players.pack()
 
-        self.show_cards()  # Call show_cards before binding the event
+        self.show_cards()
 
         self.spinbox = tk.Spinbox(master, from_=1, to=3, width=55, font=("times", 15))
         self.spinbox.pack()
 
-        self.play_button = tk.Button(master, text="Jogar Carta", command=self.play_player)
+        self.play_button = tk.Button(master, text="Jogar Carta", command=self.play_card, font=("times", 15))
         self.play_button.pack()
 
     def generate_player_cards(self):
-        # Assuming each player gets 3 cards
         player_cards = {}
         for player in self.player_names:
             player_cards[player] = [self.deck.draw_card() for _ in range(3)]
@@ -121,22 +125,40 @@ class TrucoJogarCartas:
     def show_cards(self):
         self.listbox_players.delete(0, tk.END)
         for player_name in self.player_names:
+            # Adiciona o nome do jogador antes de mostrar as cartas com negrito
             self.listbox_players.insert(tk.END, f"Cartas de {player_name}:")
-            cards = self.player_cards[player_name]  # Use player_name instead of player_index
+            cards = self.player_cards[player_name]
             for card in cards:
                 self.listbox_players.insert(tk.END, card)
-            # Add a check to see if the cards are being added
             if not cards:
                 print(f"Sem cartas para o jogador {player_name}")
 
-    def play_player(self):
-        if self.listbox_players.curselection():  # Check if a card is selected
-            player_index = self.listbox_players.curselection()[0]
-            player_name = self.player_names[player_index]
-            card_index = self.spinbox.get()
-            card = self.player_cards[player_index][int(card_index) - 1]
-            print(f"Jogador {player_name} jogou a carta {card}")
-            self.player_cards[player_index].remove(card)
+    def play_card(self):
+        player_name = self.player_names[self.current_player_index]
+        card_index = int(self.spinbox.get()) - 1
+        if 0 <= card_index < len(self.player_cards[player_name]):
+            card = self.player_cards[player_name].pop(card_index)
+            self.round_cards[player_name].append(card)
+            self.show_cards()
+            print(f"{player_name} jogou a carta {card}")
+            if len(self.round_cards[player_name]) == 3:
+                self.calculate_scores()
+            self.current_player_index = (self.current_player_index + 1) % len(self.player_names)
+        else:
+            print(f"Índice de carta {card_index} inválido para o jogador {player_name}")
+
+    def calculate_scores(self):
+        card_check = CardCheck(self.round_cards)
+        for player_name in self.player_names:
+            points = card_check.calculate_points(self.round_cards[player_name])
+            self.player_scores[player_name] += points
+        print("Pontuação Final")
+        for player_name, score in self.player_scores.items():
+            print(f"{player_name}: {score}")
+        winner = max(self.player_scores, key=self.player_scores.get)
+        print(f"O vencedor é {winner} com {self.player_scores[winner]} pontos")
+        self.master.withdraw()
+        self.previous_screen.master.deiconify()
 
 
 if __name__ == "__main__":

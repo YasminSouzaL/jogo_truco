@@ -93,6 +93,47 @@ def main():
     root.mainloop()
 
 
+'''
+ def play_player(self):
+        if self.listbox_players.curselection():  # Check if a card is selected
+            player_index = self.current_player_index
+            if 0 <= player_index < len(self.player_names):
+                player_name = self.player_names[player_index]
+                card_index = int(self.spinbox.get()) - 1
+
+                # Check if player has cards and card_index is valid
+                if len(self.player_cards[player_name]) > 0 and 0 <= card_index < len(self.player_cards[player_name]):
+                    card = self.player_cards[player_name].pop(card_index)
+                    self.show_cards()
+                    print(f"{player_name} jogou a carta {card}")
+
+                    # Check if player has cards remaining before incrementing index
+                    if len(self.player_cards[player_name]) > 0:
+                        self.current_player_index = (self.current_player_index + 1) % len(self.player_names)
+                else:
+                    print(f"Índice de carta {card_index} inválido para o jogador {player_name}")
+            else:
+                print("Jogador inválido")
+
+'''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 if __name__ == "__main__":
     main()
 

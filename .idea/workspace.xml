@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0d3de13a-85c1-48aa-aff0-a5caf3502bfd" name="Changes" comment="">
+    <list default="true" id="0d3de13a-85c1-48aa-aff0-a5caf3502bfd" name="Changes" comment="Update Code">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_02_05_2024_11_45_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_02_05_2024_11_45__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/aiketruco_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/aiketruco_main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/truco_game.py" beforeDir="false" afterPath="$PROJECT_DIR$/truco_game.py" afterDir="false" />
@@ -14,6 +16,13 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -54,25 +63,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Python.aiketruco_main.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Yasmin/OneDrive/Videos/ufv_black&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Python.aiketruco_main.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Yasmin/OneDrive/Videos/ufv_black",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -123,6 +132,28 @@
       <workItem from="1715174747002" duration="2452000" />
       <workItem from="1715177227634" duration="210000" />
       <workItem from="1715187379186" duration="5900000" />
+      <workItem from="1715199918937" duration="355000" />
+      <workItem from="1715213689258" duration="115000" />
+      <workItem from="1715215841381" duration="10000" />
+      <workItem from="1715217837976" duration="699000" />
+      <workItem from="1715278040469" duration="372000" />
+      <workItem from="1715278812562" duration="2498000" />
+      <workItem from="1715301693218" duration="2017000" />
+      <workItem from="1715361945488" duration="5636000" />
+      <workItem from="1715388112393" duration="19000" />
+      <workItem from="1715451381698" duration="2398000" />
+      <workItem from="1715454974817" duration="8000" />
+      <workItem from="1715455007168" duration="2000" />
+      <workItem from="1715611732250" duration="20692000" />
+      <workItem from="1715698432799" duration="1765000" />
+      <workItem from="1715700277571" duration="3219000" />
+      <workItem from="1715715279266" duration="844000" />
+      <workItem from="1715717686968" duration="5393000" />
+      <workItem from="1715789517082" duration="4499000" />
+      <workItem from="1715798120582" duration="1722000" />
+      <workItem from="1715811256622" duration="313000" />
+      <workItem from="1715868990665" duration="2520000" />
+      <workItem from="1715879378594" duration="9926000" />
     </task>
     <servers />
   </component>
@@ -140,7 +171,11 @@
       </map>
     </option>
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Update Code" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update Code" />
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/jogo_truco$aiketruco_main.coverage" NAME="aiketruco_main Coverage Results" MODIFIED="1715192966582" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/jogo_truco$aiketruco_main.coverage" NAME="aiketruco_main Coverage Results" MODIFIED="1715887718994" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

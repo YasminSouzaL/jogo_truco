@@ -136,8 +136,7 @@ class Hand:
 
 
 class CardCheck:
-    """ Check the cards to determine the round winner"""
-
+    """ Represents the card check """
     SHACKLES = {'zap': Card("Paus", "4"),
                 'hearts': Card("Copas", "7"),
                 'diamonds': Card("Ouros", "7"),
@@ -164,13 +163,23 @@ class CardCheck:
     def get_winner(self):
         return self.winner
 
+    def calculate_scores(self):
+        # Initialize or check keys here if necessary
+        card_check = CardCheck(self.round_cards)
+        # Continue with the rest of the logic to calculate scores
+
     def check_winner_round(self):
         winners_pairs = []
 
-        pair_one_winner = self.check_shackles(self.round_cards[Pair.PAIR_ONE_ID])
+        pair_one_winner = self.check_shackles(self.round_cards.get(Pair.PAIR_ONE_ID, []))
         winners_pairs.append(pair_one_winner)
-        pair_two_winner = self.check_shackles(self.round_cards[Pair.PAIR_TWO_ID])
+        pair_two_winner = self.check_shackles(self.round_cards.get(Pair.PAIR_TWO_ID, []))
         winners_pairs.append(pair_two_winner)
+
+        if 'pair_one' not in self.round_cards:
+            self.round_cards['pair_one'] = []
+        if 'pair_two' not in self.round_cards:
+            self.round_cards['pair_two'] = []
 
         winner_card = self.check_shackles(winners_pairs)
         if winner_card in self.round_cards[Pair.PAIR_ONE_ID]:
@@ -180,23 +189,26 @@ class CardCheck:
         return winner
 
     def check_shackles(self, cards):
+        if len(cards) < 2:
+            return None
+
         fst_card_is_shackle = self.check_if_is_shackle(cards[0])
         snd_card_is_shackle = self.check_if_is_shackle(cards[1])
         if fst_card_is_shackle and snd_card_is_shackle:
             winner_card = self.get_shackle_winner(cards)
-
         elif not snd_card_is_shackle and fst_card_is_shackle:
             winner_card = cards[0]
-
         elif not fst_card_is_shackle and snd_card_is_shackle:
             winner_card = cards[1]
-
         else:
             winner_card = self.get_winner_without_shackles(cards)
 
         return winner_card
 
     def check_if_is_shackle(self, card):
+        if card is None:
+            return False
+
         zap = card.value == self.SHACKLES['zap'].value and card.suit == self.SHACKLES['zap'].suit
         hearts = card.value == self.SHACKLES['hearts'].value and card.suit == self.SHACKLES['hearts'].suit
         diamonds = card.value == self.SHACKLES['diamonds'].value and card.suit == self.SHACKLES['diamonds'].suit
@@ -206,6 +218,8 @@ class CardCheck:
         return zap or hearts or diamonds or ace_of_spades
 
     def get_winner_without_shackles(self, cards):
+        if not cards or len(cards) < 2 or cards[0] is None or cards[1] is None:
+            return None
         first_card = cards[0].value
         second_card = cards[1].value
         if self.CARDS_VALUES[first_card] > self.CARDS_VALUES[second_card]:
@@ -216,6 +230,8 @@ class CardCheck:
         return winner_card
 
     def get_shackle_winner(self, cards):
+        if not cards or len(cards) < 2:
+            return None
 
         first_card_shackle = self.get_shackle(cards[0])
         second_card_shackle = self.get_shackle(cards[1])
@@ -226,7 +242,7 @@ class CardCheck:
             winner_card = cards[1]
 
         return winner_card
-    
+
     def get_shackle(self, card):
         if card.value == self.SHACKLES['zap'].value and card.suit == self.SHACKLES['zap'].suit:
             return self.SHACKLES['zap'].value
@@ -238,6 +254,15 @@ class CardCheck:
             return self.SHACKLES['ace_of_spades'].value
         else:
             raise Exception("Carta não é uma manilha")
+
+    def calculate_points(self, cards):
+        if len(cards) < 3:
+            return 0
+
+        return (self.CARDS_VALUES.get(cards[0].value, 0) +
+                self.CARDS_VALUES.get(cards[1].value, 0) +
+                self.CARDS_VALUES.get(cards[2].value, 0))
+
 
 class Pair:
     """ Represents the pair """
