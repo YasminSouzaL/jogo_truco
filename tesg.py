@@ -152,33 +152,13 @@ class TrucoJogarCartas:
         for player_name in self.player_names:
             points = card_check.calculate_points(self.round_cards[player_name])
             self.player_scores[player_name] += points
-
-        self.master.withdraw()
-        score_screen = tk.Toplevel(self.master)
-        app = ScoreScreen(score_screen, self.player_scores)
-
-class ScoreScreen:
-    def __init__(self, master, player_scores):
-        self.master = master
-        self.player_scores = player_scores
-
-        master.title("Pontuação Final")
-
-        self.label = tk.Label(master, text="Pontuação Final: ", font=("times", 15), fg="green")
-        self.label.pack()
-
-        self.score_listbox = tk.Listbox(master)
-        self.score_listbox.pack()
-
+        print("Pontuação Final")
         for player_name, score in self.player_scores.items():
-            self.score_listbox.insert(tk.END, f"{player_name}: {score}")
-
+            print(f"{player_name}: {score}")
         winner = max(self.player_scores, key=self.player_scores.get)
-        self.winner_label = tk.Label(master, text=f"O vencedor é {winner} com {self.player_scores[winner]} pontos", font=("times", 25), fg="blue")
-        self.winner_label.pack()
-
-        self.close_button = tk.Button(master, text="Fechar", command=master.destroy)
-        self.close_button.pack()
+        print(f"O vencedor é {winner} com {self.player_scores[winner]} pontos")
+        self.master.withdraw()
+        self.previous_screen.master.deiconify()
 
 
 if __name__ == "__main__":
