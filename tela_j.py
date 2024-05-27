@@ -1,9 +1,7 @@
 # Author : Yasmin Souza-8764
 import tkinter as tk
-from random import shuffle
-from tkinter import Listbox
 
-from truco_regras import TestDeck
+from truco_regras import TestDeck, TestHand, TestCardCheck, TestRound
 from truco_game import Deck, CardCheck, Pair
 
 
@@ -102,37 +100,42 @@ class TrucoJogarCartas:
 
         master.title("Truco Game - Jogar Cartas")
 
-        self.label_players = tk.Label(master, text="Cartas de cada jogador:", font=("times", 15), fg="red")
+        self.label_players = tk.Label(master, text="Cartas de cada jogador:", font=("times", 18), fg="red")
         self.label_players.pack()
 
-        self.listbox_players = tk.Listbox(master)
+        self.listbox_players = tk.Listbox(master, font=("times", 12), width=40, height=9)
         self.listbox_players.pack()
 
         self.show_cards()
 
-        self.spinbox = tk.Spinbox(master, from_=1, to=3, width=55, font=("times", 15))
+        self.spinbox = tk.Spinbox(master, from_=1, to=3, font=("times", 15))
         self.spinbox.pack()
 
         self.play_button = tk.Button(master, text="Jogar Carta", command=self.play_card, font=("times", 15))
         self.play_button.pack()
 
+    #Chamar a função do testDECK para testar as cartas gerada
     def generate_player_cards(self):
         player_cards = {}
         for player in self.player_names:
             player_cards[player] = [self.deck.draw_card() for _ in range(3)]
+        TestDeck(player_cards)  # Call TestDeck with player_cards
         return player_cards
 
+    #Chamar a função do testHand para testar as maos geradas
     def show_cards(self):
         self.listbox_players.delete(0, tk.END)
         for player_name in self.player_names:
             # Adiciona o nome do jogador antes de mostrar as cartas com negrito
             self.listbox_players.insert(tk.END, f"Cartas de {player_name}:")
             cards = self.player_cards[player_name]
+            TestHand(cards)  # Call TestHand with player's cards
             for card in cards:
                 self.listbox_players.insert(tk.END, card)
             if not cards:
                 print(f"Sem cartas para o jogador {player_name}")
 
+    #chamar função testRound para testar cada rodada
     def play_card(self):
         player_name = self.player_names[self.current_player_index]
         card_index = int(self.spinbox.get()) - 1
@@ -147,18 +150,41 @@ class TrucoJogarCartas:
         else:
             print(f"Índice de carta {card_index} inválido para o jogador {player_name}")
 
+    #chamar a função testCardCheck para testar a pontuação
     def calculate_scores(self):
         card_check = CardCheck(self.round_cards)
         for player_name in self.player_names:
             points = card_check.calculate_points(self.round_cards[player_name])
             self.player_scores[player_name] += points
-        print("Pontuação Final")
-        for player_name, score in self.player_scores.items():
-            print(f"{player_name}: {score}")
-        winner = max(self.player_scores, key=self.player_scores.get)
-        print(f"O vencedor é {winner} com {self.player_scores[winner]} pontos")
+
         self.master.withdraw()
-        self.previous_screen.master.deiconify()
+        score_screen = tk.Toplevel(self.master)
+        app = ScoreScreen(score_screen, self.player_scores)
+
+
+class ScoreScreen:
+    def __init__(self, master, player_scores):
+        self.master = master
+        self.player_scores = player_scores
+
+        master.title("Pontuação Final")
+
+        self.label = tk.Label(master, text="Pontuação Final: ", font=("times", 20), fg="green")
+        self.label.pack()
+
+        self.score_listbox = tk.Listbox(master, font=("times", 15), width=40, height=9)
+        self.score_listbox.pack()
+
+        for player_name, score in self.player_scores.items():
+            self.score_listbox.insert(tk.END, f"{player_name}: {score}")
+
+        winner = max(self.player_scores, key=self.player_scores.get)
+        self.winner_label = tk.Label(master, text=f"O vencedor é {winner} com {self.player_scores[winner]} pontos",
+                                     font=("times", 25), fg="blue")
+        self.winner_label.pack()
+
+        self.close_button = tk.Button(master, text="Fechar", command=master.destroy)
+        self.close_button.pack()
 
 
 if __name__ == "__main__":

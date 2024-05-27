@@ -3,7 +3,7 @@
 import random
 
 class Card:
-    """Prototype class for Card"""
+    """ Representa a carta de baralho """
     def __init__(self, suit, value=None):
         self.suit = suit
         self.value = value
@@ -24,6 +24,8 @@ class Card:
             value = "Valete"
 
         return value + " de " + suit
+
+
 
 
 class Deck:

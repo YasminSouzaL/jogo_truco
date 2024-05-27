@@ -30,6 +30,9 @@ class TestDeck:
 
     NUMBER_OF_CARDS_IN_TRUCO = 40
 
+    def __init__(self,player_cards):
+        self.player_cards = player_cards
+
     def test_deck_initialization(self, deck):
         assert len(deck.cards) == self.NUMBER_OF_CARDS_IN_TRUCO
 
@@ -68,6 +71,9 @@ class TestDeck:
 
 
 class TestHand:
+
+    def __init__(self, cards):
+        self.cards = cards
 
     @pytest.fixture
     def hand(self, deck):

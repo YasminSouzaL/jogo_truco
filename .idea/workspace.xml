@@ -7,6 +7,12 @@
     <list default="true" id="0d3de13a-85c1-48aa-aff0-a5caf3502bfd" name="Changes" comment="Update Code">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/aiketruco_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/aiketruco_main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tesg.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test01.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/teste.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/truco_game.py" beforeDir="false" afterPath="$PROJECT_DIR$/truco_game.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/truco_regras.py" beforeDir="false" afterPath="$PROJECT_DIR$/truco_regras.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/truco_tela.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -156,6 +162,20 @@
       <workItem from="1715991829675" duration="797000" />
       <workItem from="1716055173083" duration="93000" />
       <workItem from="1716223702755" duration="301000" />
+      <workItem from="1716240028293" duration="706000" />
+      <workItem from="1716303315395" duration="1358000" />
+      <workItem from="1716398002234" duration="1183000" />
+      <workItem from="1716412665087" duration="1803000" />
+      <workItem from="1716482456134" duration="8606000" />
+      <workItem from="1716507455535" duration="1769000" />
+      <workItem from="1716510075675" duration="1107000" />
+      <workItem from="1716819465321" duration="5430000" />
+      <workItem from="1716825305967" duration="378000" />
+      <workItem from="1716827936164" duration="3750000" />
+      <workItem from="1716831967389" duration="347000" />
+      <workItem from="1716832437586" duration="294000" />
+      <workItem from="1716832851163" duration="893000" />
+      <workItem from="1716835734505" duration="2498000" />
     </task>
     <servers />
   </component>
@@ -178,6 +198,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="Update Code" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/jogo_truco$aiketruco_main.coverage" NAME="aiketruco_main Coverage Results" MODIFIED="1716055206249" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/jogo_truco$aiketruco_main.coverage" NAME="aiketruco_main Coverage Results" MODIFIED="1716837561161" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
