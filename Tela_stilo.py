@@ -16,6 +16,8 @@ GREY = (196, 213, 230)
 RED = (125, 34, 34)
 GREEN = (113, 146, 100)
 BLUE = (34, 34, 125)
+REDClaro = (255, 107, 102)
+VerdeClaro = (153, 255, 102)
 
 # Fonte
 pygame.font.init()
@@ -36,8 +38,10 @@ FPS = 45
 # Imagens
 background_image = pygame.image.load("data/imagem/background.png")
 background_image = pygame.transform.scale(background_image, (width, height))
+win_image = pygame.image.load("data/imagem/wallpaper.png")
+win_image = pygame.transform.scale(win_image, (width, height))
 textbox = pygame.image.load("data/imagem/textbox.png")
-textbox = pygame.transform.scale(textbox, (300, 50))
+textbox = pygame.transform.scale(textbox, (150, 40))
 
 # Caixa de entrada
 input_boxes = [pygame.Rect(170, 200, 300, 50), pygame.Rect(170, 300, 300, 50)]
@@ -48,6 +52,8 @@ screen = pygame.display.set_mode((width, height))
 # Botões
 add_button = pygame.Rect(100, 400, 200, 50)
 remove_button = pygame.Rect(400, 400, 200, 50)
+play_button = pygame.Rect(500, 200, 100, 50)
+button_choose = pygame.Rect(500, 200, 100, 50)
 
 def draw_text(text, rect, color, screen):
     text_surf = main_font.render(text, True, color)
@@ -202,6 +208,11 @@ class ScreenCard:
         self.card_width = 80
         self.card_height = 120
 
+    def draw_title(self):
+        title_surf = main_font.render("Cartas", True, RED)
+        title_rect = title_surf.get_rect(center=(width // 2, 50))
+        screen.blit(title_surf, title_rect)
+
     def checkplayer(self):
         if len(self.player_names) >= 2:
             self.deck.shuffle()
@@ -220,12 +231,19 @@ class ScreenCard:
         return player_cards
 
     def draw_text(self, text, font, color, x, y):
-        screen.blit(textbox, (x - 50, y - 25))
+        screen.blit(textbox, (x - 100, y - 30))
         text_surf = font.render(text, True, color)
         text_rect = text_surf.get_rect(center=(x, y))
         screen.blit(text_surf, text_rect)
 
-    #Desenha as cartas
+
+    def draw_texto(self, text, font, color, x, y):
+        text_surf = font.render(text, True, color)
+        text_rect = text_surf.get_rect(center=(x, y))
+        screen.blit(text_surf, text_rect)
+
+        # Desenha as cartas
+
     def draw_cards(self):
         x = 50
         y = 50
@@ -237,9 +255,15 @@ class ScreenCard:
             y += 200
             x = 50
 
+    def button_play(self):
+        pygame.draw.rect(screen, GREY, play_button)
+        self.draw_texto('Jogar', main_font, BLACK, 550, 225)
+
     def draw(self):
         screen.blit(background_image, (0, 0))
+        self.draw_title()
         self.draw_cards()
+        self.button_play()
         pygame.display.flip()
 
     def run(self):
@@ -253,90 +277,135 @@ class ScreenCard:
                         pygame.quit()
                         sys.exit()
                     if event.type == pygame.MOUSEBUTTONDOWN:
-                        if add_button.collidepoint(event.pos):
+                        if play_button.collidepoint(event.pos):
                             self.cards_drawn = True
                             self.running = False
                         if remove_button.collidepoint(event.pos):
                             self.running = False
-
 class Rodadas:
-    '''
-    Classe que controla as rodadas do jogo
-    Onde o jogador escolhe a carta que deseja jogar
-    depois o outro jogador escolhe a carta que deseja jogar
-    e por fim a carta vencedora é escolhida
-    '''
     def __init__(self):
         self.running = True
-        self.deck = Deck()
         self.player_names = []
         self.player_cards = {}
-        self.card_width = 80
-        self.card_height = 120
+        self.current_round = 1
+        self.selected_cards = {}
+        self.round_cards = []
+        self.card_width = 130
+        self.card_height = 140
+        self.current_player_index = 0
+        self.round_winners = []
+        self.winner = None
 
-    def test(self):
-        print("Entrei na classe Rodadas")
-
-    def checkplayer(self):
-        if len(self.player_names) >= 2:
-            self.deck.shuffle()
-            self.player_cards = self.generate_player_cards()
-            print("Cartas geradas para os jogadores:", self.player_cards)
-            return True
-        else:
-            print("Não há jogadores suficientes.")
-            return False
-
-    def generate_player_cards(self):
-        player_cards = {}
-        for player in self.player_names:
-            player_cards[player] = self.deck.deal_hand(3)
-        TestDeck(player_cards)
-        return player_cards
+    def draw_title(self):
+        title_surf = main_font.render("Rodadas", True, RED)
+        title_rect = title_surf.get_rect(center=(width // 2, 50))
+        screen.blit(title_surf, title_rect)
 
     def draw_text(self, text, font, color, x, y):
         text_surf = font.render(text, True, color)
         text_rect = text_surf.get_rect(center=(x, y))
         screen.blit(text_surf, text_rect)
 
-    # mostra as cartas do 1 jogador e pedir para ele escolher uma carta e depois o outro jogador escolher uma carta
-    def choose_card(self):
-        x = 50
-        y = 50
-        for player, cards in self.player_cards.items():
-            self.draw_text(player, main_font, BLACK, x, y)
-            for card in cards:
-                pygame.draw.rect(screen, RED, (x, y + 50, self.card_width, self.card_height))
-                x += 100
-            y += 200
-            x = 50
-
-    def button(self):
-        pygame.draw.rect(screen, GREY, (50, 50, 100, 50))
-        self.draw_text('Escolher', main_font, BLACK, 100, 75)
+    def draw_cards(self, player):
+        x = 100
+        y = 200
+        card_spacing = 40
+        for card in self.player_cards[player]:
+            pygame.draw.rect(screen, REDClaro, (x, y, self.card_width, self.card_height))
+            self.draw_text(str(card), button_font, BLACK, x + self.card_width // 2, y + self.card_height // 2)
+            x += self.card_width + card_spacing
+        y += 200
 
     def draw(self):
-        screen.fill(WHITE)
-        self.test()
-        self.choose_card()
-        self.test()
-        self.button()
+        screen.blit(background_image, (0, 0))
+        self.draw_title()
         pygame.display.flip()
+        for player in self.player_names:
+            self.draw_cards(player)
+        pygame.display.flip()
+
+    def get_selected_card(self, player, card_index):
+        if 0 <= card_index < len(self.player_cards[player]):
+            selected_card = self.player_cards[player][card_index]
+            self.selected_cards[player].append(selected_card)
+            del self.player_cards[player][card_index]
+            return selected_card
+        return None
+
+    def determine_round_winner(self):
+        if self.round_cards:
+            winner = max(self.round_cards, key=lambda x: x[1])[0]
+            self.round_winners.append(winner)
+            self.round_cards = []
+        else:
+            self.round_winners.append(None)
+
+    def run_round(self):
+        while self.current_round <= 3:
+            for player in self.player_names:
+                if not self.player_cards[player]:
+                    self.running = False
+                    return
+                self.draw()
+                pygame.display.flip()
+                selected = False
+                while not selected:
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            pygame.quit()
+                            sys.exit()
+                        if event.type == pygame.MOUSEBUTTONDOWN:
+                            if event.button == 1:
+                                card_index = (event.pos[0] - 100) // 100
+                                selected_card = self.get_selected_card(player, card_index)
+                                if selected_card:
+                                    self.round_cards.append((player, selected_card))
+                                    selected = True
+            self.determine_round_winner()
+            print(f"Vencedor da rodada {self.current_round}: {self.round_winners[-1]}")
+            self.current_round += 1
+        self.reset()
+
+    def reset(self):
+        self.current_round = 1
+        self.selected_cards = {player: [] for player in self.player_names}
+        self.round_cards = []
+
+    def determine_game_winner(self):
+        victories = {player: self.round_winners.count(player) for player in self.player_names}
+        self.winner = max(victories, key=victories.get)
 
     def run(self):
         print("Running Rodadas")
         self.running = True
-        while self.running:
-            self.draw()
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if add_button.collidepoint(event.pos):
-                        self.running = False
-                    if remove_button.collidepoint(event.pos):
-                        self.running = False
+        self.run_round()
+        self.determine_game_winner()
+
+
+class Winner:
+    def __init__(self):
+        self.running = True
+        self.winner = None
+
+    def draw_title(self):
+        title_surf = main_font.render("Vencedor", True, BLACK)
+        title_rect = title_surf.get_rect(center=(width // 2, 50))
+        screen.blit(title_surf, title_rect)
+
+    def draw_text(self, text, font, color, x, y):
+        text_surf = font.render(text, True, color)
+        text_rect = text_surf.get_rect(center=(x, y))
+        screen.blit(text_surf, text_rect)
+
+    def draw_square(self, x, y, width, height, color):
+        pygame.draw.rect(screen, color, (x - width // 2, y - height // 2, width, height))
+
+    def draw(self):
+        screen.blit(win_image, (0, 0))
+        self.draw_title()
+        self.draw_square(width // 2, height // 2, 300, 100, VerdeClaro)
+        self.draw_text(f"O vencedor foi: {self.winner}", main_font, BLACK, width // 2, height // 2)
+        pygame.display.flip()
 
 class ScreenSettings:
     def __init__(self):

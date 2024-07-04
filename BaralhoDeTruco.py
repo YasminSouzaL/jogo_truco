@@ -10,6 +10,9 @@ class Card:
     def __str__(self):
         return f"{self.value} de {self.suit}"
 
+    def __gt__(self, other):
+        return self.value > other.value
+
 class Deck:
     CARDS_QUANTITY = 40
     instance = None

@@ -249,6 +249,9 @@ class TrucoGame:
         text_surface = font.render(text, True, color)
         self.screen.blit(text_surface, (x, y))
 
+    def run(self):
+        pass
+
 
 if __name__ == '__main__':
     game = TrucoGame()

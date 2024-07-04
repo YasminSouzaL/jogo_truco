@@ -1,7 +1,9 @@
 import pygame
 from pygame.locals import *
 import sys
+
 from Tela_stilo import *
+
 
 pygame.init()
 
@@ -79,6 +81,7 @@ class Game:
         self.player_creation = PlayerCreationScreen()
         self.screen_card = ScreenCard()
         self.rodadas = Rodadas()
+        self.winner = Winner()
 
     def switch_screen(self):
         print(f"Switching screen from {self.current_screen}")
@@ -91,10 +94,15 @@ class Game:
             self.current_screen = "Rodadas"
             self.rodadas.player_names = self.screen_card.player_names
             self.rodadas.player_cards = self.screen_card.player_cards
+            self.rodadas.selected_cards = {player: [] for player in self.rodadas.player_names}
             print("Switched to Rodadas")
         elif self.current_screen == "Rodadas":
+            self.current_screen = "Winner"
+            self.winner.winner = self.rodadas.winner
+            print("Switched to Winner")
+        elif self.current_screen == "Winner":
             self.running = False
-            print("Game ended")
+            print("Game ended.")
 
     def run(self):
         while self.running:
@@ -107,7 +115,10 @@ class Game:
             elif self.current_screen == "Rodadas":
                 self.rodadas.run()
                 self.switch_screen()
-
+            elif self.current_screen == "Winner":
+                self.winner.draw()
+                pygame.time.wait(5000)  # Espera 5 segundos antes de encerrar
+                self.running = False
 def menu():
     text1, text2, text3 = "Jogar", "Settings", "Antigo"
     size_button = (200, 50)
@@ -170,7 +181,7 @@ def main_game_loop():
             tosetup = ScreenSettings()
             tosetup.run()
         elif action == "Antigo":
-            display_message("Jogo antigo")
+            display_message("Em construção")
 
 
 if __name__ == "__main__":
