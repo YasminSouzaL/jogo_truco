@@ -5,38 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0d3de13a-85c1-48aa-aff0-a5caf3502bfd" name="Changes" comment="Update Code">
-      <change afterPath="$PROJECT_DIR$/Antigo/BaralhoDeTruco.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Antigo/truco_regras.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/font/COMICATE.TTF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/font/DIGITAL.TXT" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/font/DS-DIGI.TTF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/font/DS-DIGIB.TTF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/font/DS-DIGII.TTF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/font/DS-DIGIT.TTF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/font/stocky.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/imagem/background.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/imagem/background2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/imagem/button1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/imagem/button2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/imagem/cards.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/imagem/config.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/imagem/logo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/imagem/textbox.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/imagem/wallpaper.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BaralhoDeTruco.py" beforeDir="false" afterPath="$PROJECT_DIR$/BaralhoDeTruco.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Captura de tela de 2024-04-07 18-24-05.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/common.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EntityStore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Logica.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MainTu.py" beforeDir="false" afterPath="$PROJECT_DIR$/Antigo/MainTu.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tela_stilo.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tela_stilo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/antigatela.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tela_j.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/truco_regras.py" beforeDir="false" afterPath="$PROJECT_DIR$/truco_regras.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,9 +20,22 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <excluded-from-favorite>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="main" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </excluded-from-favorite>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="04b249e67ed4549eb577b2888389f7773834d037" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
