@@ -3,15 +3,28 @@
 import random
 
 class Card:
-    def __init__(self, suit, value):
+    """ Representa a carta de baralho """
+    def __init__(self, suit, value=None):
         self.suit = suit
         self.value = value
 
-    def __str__(self):
-        return f"{self.value} de {self.suit}"
+    def clone(self, value):
+        return Card(self.suit, value)
 
-    def __gt__(self, other):
-        return self.value > other.value
+    def __str__(self):
+        suit = self.suit
+        value = self.value
+        if value == "A":
+            value = "As"
+        elif value == "K":
+            value = "Rei"
+        elif value == "Q":
+            value = "Dama"
+        elif value == "J":
+            value = "Valete"
+
+        return value + " de " + suit
+
 
 class Deck:
     CARDS_QUANTITY = 40
@@ -35,15 +48,20 @@ class Deck:
         self.__create_cards("Paus")
 
     def __create_cards(self, suit):
-        values = ['A', 'J', 'Q', 'K'] + [str(num) for num in range(2, 8)]
-        for value in values:
-            card = Card(suit, value)
+        suit_card = Card(suit)
+        self.cards.append(suit_card.clone("A"))
+        self.cards.append(suit_card.clone("J"))
+        self.cards.append(suit_card.clone("Q"))
+        self.cards.append(suit_card.clone("K"))
+        for number in range(2, 8):
+            value = str(number)
+            card = suit_card.clone(value)
             self.cards.append(card)
 
     def create_deck(self):
         suits = ['Ouros', 'Copas', 'Espadas', 'Paus']
         values = ['4', '5', '6', '7', 'Q', 'J', 'K', 'A', '2', '3']
-        deck = [Card(suit, value) for suit in suits for value in values]
+        deck = [Card(value, suit) for suit in suits for value in values]
         return deck
 
     def shuffle(self):
@@ -87,8 +105,6 @@ class Deck:
         self.cards = self.cards[number_of_cards:]
         return hand
 
-    def draw(self):
-        return self.cards.pop()
 
 class Hand:
     """ Represents the player hand """

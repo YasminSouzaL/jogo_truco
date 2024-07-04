@@ -1,8 +1,8 @@
-import sys
 import pygame
-from pygame.locals import *
+import sys
 from BaralhoDeTruco import Deck
 from truco_regras import TestDeck
+
 # Inicialização do Pygame
 pygame.init()
 
@@ -33,90 +33,36 @@ pygame.display.set_caption('JOGO DE TRUCO!!!!')
 pygame.display.set_icon(logo)
 
 clock = pygame.time.Clock()
-
 FPS = 45
+
 # Imagens
 background_image = pygame.image.load("data/imagem/background.png")
 background_image = pygame.transform.scale(background_image, (width, height))
+
 win_image = pygame.image.load("data/imagem/wallpaper.png")
 win_image = pygame.transform.scale(win_image, (width, height))
+
 textbox = pygame.image.load("data/imagem/textbox.png")
-textbox = pygame.transform.scale(textbox, (150, 40))
+textbox = pygame.transform.scale(textbox, (300, 50))
 
 # Caixa de entrada
-input_boxes = [pygame.Rect(170, 200, 300, 50), pygame.Rect(170, 300, 300, 50)]
-active_boxes = [False, False]
-box_colors = [GREY, GREY]
-texts = ['', '']
+input_boxes = [pygame.Rect(170, 200, 300, 50)]
+active_boxes = [False]
+box_colors = [GREY]
+texts = ['']
 screen = pygame.display.set_mode((width, height))
+
 # Botões
 add_button = pygame.Rect(100, 400, 200, 50)
 remove_button = pygame.Rect(400, 400, 200, 50)
 play_button = pygame.Rect(500, 200, 100, 50)
 button_choose = pygame.Rect(500, 200, 100, 50)
 
-def draw_text(text, rect, color, screen):
-    text_surf = main_font.render(text, True, color)
-    screen.blit(text_surf, (rect.x, rect.y - 30))
 
-class Background:
-    def __init__(self, image_path):
-        self.image = pygame.image.load(image_path).convert()
-        self.image = pygame.transform.smoothscale(self.image, (width, height))
-
-    def draw_background(self):
-        screen.blit(self.image, (0, 0))
-        clock.tick(250)
-class Buttons(pygame.sprite.Sprite):
-    def __init__(self, text, size):
-        super().__init__()
-
-        self.image_up = pygame.image.load("data/imagem/button1.png").convert()
-        self.image_down = pygame.image.load("data/imagem/button2.png").convert()
-
-        self.image_up = pygame.transform.scale(self.image_up, size)
-        self.image_down = pygame.transform.scale(self.image_down, size)
-
-        self.image = self.image_up
-        self.rect = self.image.get_rect()
-
-        self.click = False
-
-        self.font = pygame.font.SysFont('padrão', 50)
-        self.text = text
-        self.text_surface = None
-        self.text_rect = None
-        self.render_text()
-
-    def render_text(self):
-        self.text_surface = self.font.render(self.text, True, BLACK)
-        self.text_rect = self.text_surface.get_rect(center=self.rect.center)
-        self.image_up.blit(self.text_surface, self.text_rect)
-        self.image_down.blit(self.text_surface, self.text_rect)
-        clock.tick(FPS)
-
-    def update(self):
-        self.image = self.image_up if not self.click else self.image_down
-
-    def draw(self, screen):
-        screen.blit(self.image, self.rect.topleft)
-        # Centralizar o texto no botão
-        self.text_rect.center = self.rect.center
-        screen.blit(self.text_surface, self.text_rect)
-
-    def print_display(self, pos):
-        self.update()
-        self.draw(screen)
-        self.collision_point(pos)
-
-    def collision_point(self, pos):
-        if self.rect.collidepoint(pos):
-            self.click = True
-        else:
-            self.click = False
-
-    def up(self):
-        self.click = False
+def draw_title():
+    title_surf = main_font.render("Criar Jogador", True, RED)
+    title_rect = title_surf.get_rect(center=(width // 2, 100))
+    screen.blit(title_surf, title_rect)
 
 
 class PlayerCreationScreen:
@@ -124,11 +70,6 @@ class PlayerCreationScreen:
         self.running = True
         self.player_names = []
         self.input_name = ''
-
-    def draw_title(self):
-        title_surf = main_font.render("Criar Jogador", True, RED)
-        title_rect = title_surf.get_rect(center=(width // 2, 100))
-        screen.blit(title_surf, title_rect)
 
     def draw_text(self, text, font, color, x, y):
         text_surf = font.render(text, True, color)
@@ -151,7 +92,7 @@ class PlayerCreationScreen:
     def draw(self):
         # Desenha a tela
         screen.blit(background_image, (0, 0))
-        self.draw_title()
+        draw_title()
         self.draw_input()
         self.draw_buttons()
         pygame.display.flip()
@@ -197,8 +138,10 @@ class PlayerCreationScreen:
 
             if len(self.player_names) >= 2:
                 self.running = False
+
+
 class ScreenCard:
-    #Classe que controla a tela de cartas
+    # Classe que controla a tela de cartas
     def __init__(self):
         self.running = True
         self.deck = Deck()
@@ -231,19 +174,11 @@ class ScreenCard:
         return player_cards
 
     def draw_text(self, text, font, color, x, y):
-        screen.blit(textbox, (x - 100, y - 30))
         text_surf = font.render(text, True, color)
         text_rect = text_surf.get_rect(center=(x, y))
         screen.blit(text_surf, text_rect)
 
-
-    def draw_texto(self, text, font, color, x, y):
-        text_surf = font.render(text, True, color)
-        text_rect = text_surf.get_rect(center=(x, y))
-        screen.blit(text_surf, text_rect)
-
-        # Desenha as cartas
-
+    # Desenha as cartas
     def draw_cards(self):
         x = 50
         y = 50
@@ -251,16 +186,17 @@ class ScreenCard:
             self.draw_text(player, main_font, BLACK, x, y)
             for card in cards:
                 pygame.draw.rect(screen, RED, (x, y + 50, self.card_width, self.card_height))
+                self.draw_text(str(card), main_font, BLACK, x + self.card_width // 2, y + self.card_height // 2)
                 x += 100
             y += 200
             x = 50
 
     def button_play(self):
         pygame.draw.rect(screen, GREY, play_button)
-        self.draw_texto('Jogar', main_font, BLACK, 550, 225)
+        self.draw_text('Jogar', main_font, BLACK, 550, 225)
 
     def draw(self):
-        screen.blit(background_image, (0, 0))
+        screen.fill(WHITE)
         self.draw_title()
         self.draw_cards()
         self.button_play()
@@ -282,6 +218,8 @@ class ScreenCard:
                             self.running = False
                         if remove_button.collidepoint(event.pos):
                             self.running = False
+
+
 class Rodadas:
     def __init__(self):
         self.running = True
@@ -407,31 +345,51 @@ class Winner:
         self.draw_text(f"O vencedor foi: {self.winner}", main_font, BLACK, width // 2, height // 2)
         pygame.display.flip()
 
-class ScreenSettings:
+class Game:
     def __init__(self):
         self.running = True
+        self.current_screen = "PlayerCreation"
+        self.player_creation = PlayerCreationScreen()
+        self.screen_card = ScreenCard()
+        self.rodadas = Rodadas()
+        self.winner = Winner()
 
-    def draw_title(self):
-        title_surf = main_font.render("Configurações", True, RED)
-        title_rect = title_surf.get_rect(center=(width // 2, 200))
-        screen.blit(title_surf, title_rect)
-
-    def draw_emoji(self):
-        emoji = pygame.image.load("data/imagem/config.png")
-        emoji = pygame.transform.scale(emoji, (100, 100))
-        screen.blit(emoji, (width // 2, 300))
-
-    def draw(self):
-        screen.fill(WHITE)
-        self.draw_title()
-        self.draw_emoji()
-        pygame.display.flip()
+    def switch_screen(self):
+        print(f"Switching screen from {self.current_screen}")
+        if self.current_screen == "PlayerCreation":
+            if len(self.player_creation.player_names) >= 2:
+                self.current_screen = "ScreenCard"
+                self.screen_card.player_names = self.player_creation.player_names
+                print("Switched to ScreenCard")
+        elif self.current_screen == "ScreenCard":
+            self.current_screen = "Rodadas"
+            self.rodadas.player_names = self.screen_card.player_names
+            self.rodadas.player_cards = self.screen_card.player_cards
+            self.rodadas.selected_cards = {player: [] for player in self.rodadas.player_names}
+            print("Switched to Rodadas")
+        elif self.current_screen == "Rodadas":
+            self.current_screen = "Winner"
+            self.winner.winner = self.rodadas.winner
+            print("Switched to Winner")
+        elif self.current_screen == "Winner":
+            self.running = False
+            print("Game ended.")
 
     def run(self):
         while self.running:
-            self.draw()
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.running = False
-        pygame.quit()
-        sys.exit()
+            if self.current_screen == "PlayerCreation":
+                self.player_creation.run()
+                self.switch_screen()
+            elif self.current_screen == "ScreenCard":
+                self.screen_card.run()
+                self.switch_screen()
+            elif self.current_screen == "Rodadas":
+                self.rodadas.run()
+                self.switch_screen()
+            elif self.current_screen == "Winner":
+                self.winner.draw()
+                pygame.time.wait(5000)  # Espera 5 segundos antes de encerrar
+                self.running = False
+
+game = Game()
+game.run()
