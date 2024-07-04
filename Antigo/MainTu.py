@@ -1,17 +1,8 @@
 import pygame
 import sys
-import Tela_stilo
 from truco_regras import TestDeck, CardCheck
 from BaralhoDeTruco import Deck
 
-
-
-
-
-
-#imagem de fundo
-telas = pygame.image.load('background.png')
-telas = pygame.transform.scale(telas, (800, 600))
 
 class TrucoGame:
     def __init__(self):
@@ -100,7 +91,6 @@ class TrucoGame:
 
     def game_loop(self):
         while True:
-            #background.draw_background()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()

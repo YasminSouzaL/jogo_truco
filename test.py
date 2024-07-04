@@ -1,8 +1,9 @@
-import sys
 import pygame
-from pygame.locals import *
+import sys
 from BaralhoDeTruco import Deck
 from truco_regras import TestDeck
+
+
 # Inicialização do Pygame
 pygame.init()
 
@@ -21,6 +22,7 @@ BLUE = (34, 34, 125)
 pygame.font.init()
 main_font = pygame.font.Font("data/font/DS-DIGIB.TTF", 32)
 custom_font = pygame.font.Font("data/font/stocky.ttf", 32)
+
 button_font = pygame.font.Font(None, 36)
 
 # Configurações da tela
@@ -36,6 +38,7 @@ FPS = 45
 # Imagens
 background_image = pygame.image.load("data/imagem/background.png")
 background_image = pygame.transform.scale(background_image, (width, height))
+
 textbox = pygame.image.load("data/imagem/textbox.png")
 textbox = pygame.transform.scale(textbox, (300, 50))
 
@@ -49,71 +52,9 @@ screen = pygame.display.set_mode((width, height))
 add_button = pygame.Rect(100, 400, 200, 50)
 remove_button = pygame.Rect(400, 400, 200, 50)
 
-def draw_text(text, rect, color, screen):
-    text_surf = main_font.render(text, True, color)
-    screen.blit(text_surf, (rect.x, rect.y - 30))
-
-class Background:
-    def __init__(self, image_path):
-        self.image = pygame.image.load(image_path).convert()
-        self.image = pygame.transform.smoothscale(self.image, (width, height))
-
-    def draw_background(self):
-        screen.blit(self.image, (0, 0))
-        clock.tick(250)
-class Buttons(pygame.sprite.Sprite):
-    def __init__(self, text, size):
-        super().__init__()
-
-        self.image_up = pygame.image.load("data/imagem/button1.png").convert()
-        self.image_down = pygame.image.load("data/imagem/button2.png").convert()
-
-        self.image_up = pygame.transform.scale(self.image_up, size)
-        self.image_down = pygame.transform.scale(self.image_down, size)
-
-        self.image = self.image_up
-        self.rect = self.image.get_rect()
-
-        self.click = False
-
-        self.font = pygame.font.SysFont('padrão', 50)
-        self.text = text
-        self.text_surface = None
-        self.text_rect = None
-        self.render_text()
-
-    def render_text(self):
-        self.text_surface = self.font.render(self.text, True, BLACK)
-        self.text_rect = self.text_surface.get_rect(center=self.rect.center)
-        self.image_up.blit(self.text_surface, self.text_rect)
-        self.image_down.blit(self.text_surface, self.text_rect)
-        clock.tick(FPS)
-
-    def update(self):
-        self.image = self.image_up if not self.click else self.image_down
-
-    def draw(self, screen):
-        screen.blit(self.image, self.rect.topleft)
-        # Centralizar o texto no botão
-        self.text_rect.center = self.rect.center
-        screen.blit(self.text_surface, self.text_rect)
-
-    def print_display(self, pos):
-        self.update()
-        self.draw(screen)
-        self.collision_point(pos)
-
-    def collision_point(self, pos):
-        if self.rect.collidepoint(pos):
-            self.click = True
-        else:
-            self.click = False
-
-    def up(self):
-        self.click = False
-
 
 class PlayerCreationScreen:
+
     def __init__(self):
         self.running = True
         self.player_names = []
@@ -191,6 +132,8 @@ class PlayerCreationScreen:
 
             if len(self.player_names) >= 2:
                 self.running = False
+
+
 class ScreenCard:
     #Classe que controla a tela de cartas
     def __init__(self):
@@ -337,32 +280,42 @@ class Rodadas:
                         self.running = False
                     if remove_button.collidepoint(event.pos):
                         self.running = False
-
-class ScreenSettings:
+class Game:
     def __init__(self):
         self.running = True
+        self.current_screen = "PlayerCreation"
+        self.player_creation = PlayerCreationScreen()
+        self.screen_card = ScreenCard()
+        self.rodadas = Rodadas()
 
-    def draw_title(self):
-        title_surf = main_font.render("Configurações", True, RED)
-        title_rect = title_surf.get_rect(center=(width // 2, 200))
-        screen.blit(title_surf, title_rect)
-
-    def draw_emoji(self):
-        emoji = pygame.image.load("data/imagem/config.png")
-        emoji = pygame.transform.scale(emoji, (100, 100))
-        screen.blit(emoji, (width // 2, 300))
-
-    def draw(self):
-        screen.fill(WHITE)
-        self.draw_title()
-        self.draw_emoji()
-        pygame.display.flip()
+    def switch_screen(self):
+        print(f"Switching screen from {self.current_screen}")
+        if self.current_screen == "PlayerCreation":
+            if len(self.player_creation.player_names) >= 2:
+                self.current_screen = "ScreenCard"
+                self.screen_card.player_names = self.player_creation.player_names
+                print("Switched to ScreenCard")
+        elif self.current_screen == "ScreenCard":
+            self.current_screen = "Rodadas"
+            self.rodadas.player_names = self.screen_card.player_names
+            self.rodadas.player_cards = self.screen_card.player_cards
+            print("Switched to Rodadas")
+        elif self.current_screen == "Rodadas":
+            self.running = False
+            print("Game ended")
 
     def run(self):
         while self.running:
-            self.draw()
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.running = False
-        pygame.quit()
-        sys.exit()
+            if self.current_screen == "PlayerCreation":
+                self.player_creation.run()
+                self.switch_screen()
+            elif self.current_screen == "ScreenCard":
+                self.screen_card.run()
+                self.switch_screen()
+            elif self.current_screen == "Rodadas":
+                self.rodadas.run()
+                self.switch_screen()
+
+if __name__ == "__main__":
+    game = Game()
+    game.run()
