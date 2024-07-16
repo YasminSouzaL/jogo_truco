@@ -117,7 +117,7 @@ class Game:
                 self.switch_screen()
             elif self.current_screen == "Winner":
                 self.winner.draw()
-                pygame.time.wait(5000)  # Espera 5 segundos antes de encerrar
+                pygame.time.wait(3000)  # Espera 5 segundos antes de encerrar
                 self.running = False
 def menu():
     text1, text2, text3 = "Jogar", "Settings", "Antigo"

@@ -1,7 +1,7 @@
 import pygame
 import sys
-from BaralhoDeTruco import Deck
-from truco_regras import TestDeck
+import os
+from BaralhoDeTruco import Deck, Hand, TestDeck
 
 # Inicialização do Pygame
 pygame.init()
@@ -15,7 +15,7 @@ WHITE = (255, 255, 255)
 GREY = (196, 213, 230)
 RED = (125, 34, 34)
 GREEN = (113, 146, 100)
-BLUE = (34, 34, 125)
+BLUE = (0, 0, 128)
 REDClaro = (255, 107, 102)
 VerdeClaro = (153, 255, 102)
 
@@ -58,12 +58,30 @@ remove_button = pygame.Rect(400, 400, 200, 50)
 play_button = pygame.Rect(500, 200, 100, 50)
 button_choose = pygame.Rect(500, 200, 100, 50)
 
+# Carregar imagens das cartas
+card_images = {}
+
+def load_card_images():
+    suits = ['Copas', 'Espadas', 'Paus', 'Ouro']
+    values = ['4', '5', '6', '7', 'Q', 'J', 'K', 'As', '2', '3']
+    base_path = "Data/imagem/card"
+    for suit in suits:
+        for value in values:
+            card_name = f"{value}_{suit}.png"
+            card_path = os.path.join(base_path, card_name)
+            if os.path.exists(card_path):
+                card_image = pygame.image.load(card_path)
+                card_image = pygame.transform.scale(card_image, (80, 120))  #Redimensionar a imagem
+                card_images[f"{value}_{suit}"] = card_image
+            else:
+                print(f"File not found: {card_path}")
+
+load_card_images()
 
 def draw_title():
     title_surf = main_font.render("Criar Jogador", True, RED)
     title_rect = title_surf.get_rect(center=(width // 2, 100))
     screen.blit(title_surf, title_rect)
-
 
 class PlayerCreationScreen:
     def __init__(self):
@@ -139,7 +157,6 @@ class PlayerCreationScreen:
             if len(self.player_names) >= 2:
                 self.running = False
 
-
 class ScreenCard:
     # Classe que controla a tela de cartas
     def __init__(self):
@@ -185,8 +202,16 @@ class ScreenCard:
         for player, cards in self.player_cards.items():
             self.draw_text(player, main_font, BLACK, x, y)
             for card in cards:
-                pygame.draw.rect(screen, RED, (x, y + 50, self.card_width, self.card_height))
-                self.draw_text(str(card), main_font, BLACK, x + self.card_width // 2, y + self.card_height // 2)
+                card_name = str(card)
+                card_rect = pygame.Rect(x, y + 50, self.card_width, self.card_height)
+                pygame.draw.rect(screen, REDClaro, card_rect)
+                self.draw_text(
+                    card_name,
+                    main_font,
+                    BLACK,
+                    x + self.card_width // 2,
+                    y + self.card_height // 2 + 50
+                )
                 x += 100
             y += 200
             x = 50
@@ -220,19 +245,41 @@ class ScreenCard:
                             self.running = False
 
 
+class Pontuacao:
+    def __init__(self, player_names):
+        self.points = {name: 0 for name in player_names}
+
+    def adicionar_pontos(self, player, pontos):
+        if player in self.points:
+            self.points[player] += pontos
+        else:
+            raise KeyError(f"Jogador {player} não encontrado na pontuação")
+
+    def get_pontos(self, player):
+        if player in self.points:
+            return self.points[player]
+        else:
+            raise KeyError(f"Jogador {player} não encontrado na pontuação")
+
+
 class Rodadas:
     def __init__(self):
+        self.players = None
+        self.deck = Deck()
+        self.hand = Hand()
         self.running = True
         self.player_names = []
         self.player_cards = {}
         self.current_round = 1
         self.selected_cards = {}
         self.round_cards = []
-        self.card_width = 130
+        self.card_width = 170
         self.card_height = 140
         self.current_player_index = 0
         self.round_winners = []
         self.winner = None
+        self.truco_called = False
+        self.pontuacao = None
 
     def draw_title(self):
         title_surf = main_font.render("Rodadas", True, RED)
@@ -244,89 +291,134 @@ class Rodadas:
         text_rect = text_surf.get_rect(center=(x, y))
         screen.blit(text_surf, text_rect)
 
+    def draw_players(self):
+        y = 400
+        for player in self.player_names:
+            points = self.pontuacao.get_pontos(player)
+            self.draw_text(f"{player} - {points} pontos", main_font, BLACK, 150, y)
+            y += 50
+
+    def draw_truco_button(self):
+        truco_button = pygame.Rect(550, 400, 150, 50)
+        pygame.draw.rect(screen, RED, truco_button)
+        self.draw_text('TRUCO', button_font, WHITE, truco_button.centerx, truco_button.centery)
+        return truco_button
+
     def draw_cards(self, player):
         x = 100
-        y = 200
-        card_spacing = 40
+        y = 140
         for card in self.player_cards[player]:
-            pygame.draw.rect(screen, REDClaro, (x, y, self.card_width, self.card_height))
-            self.draw_text(str(card), button_font, BLACK, x + self.card_width // 2, y + self.card_height // 2)
-            x += self.card_width + card_spacing
-        y += 200
+            card_name = str(card)
+            card_rect = pygame.Rect(x, y, self.card_width, self.card_height)
+            pygame.draw.rect(screen, REDClaro, card_rect)
+            self.draw_text(
+                card_name,
+                main_font,
+                BLACK,
+                x + self.card_width // 2,
+                y + self.card_height // 2
+            )
+            if card not in self.selected_cards.get(player, []):
+                self.round_cards.append((card_rect, card))
+            x += 200
 
     def draw(self):
         screen.blit(background_image, (0, 0))
+        screen.fill(WHITE)
         self.draw_title()
+        current_player = self.player_names[self.current_player_index]
+        self.draw_text(f"Vez de {current_player}", main_font, BLACK, 300, 100)
+        self.draw_cards(current_player)
+        self.draw_players()
+        truco_button = self.draw_truco_button()
         pygame.display.flip()
-        for player in self.player_names:
-            self.draw_cards(player)
-        pygame.display.flip()
+        return truco_button
+    def hand_winner(self, card1, card2):
+        hand = Hand()
+        hand.add_card(card1)
+        hand.add_card(card2)
+        print(f"Vencedor da rodada: {hand.winner()}")
 
-    def get_selected_card(self, player, card_index):
-        if 0 <= card_index < len(self.player_cards[player]):
-            selected_card = self.player_cards[player][card_index]
-            self.selected_cards[player].append(selected_card)
-            del self.player_cards[player][card_index]
-            return selected_card
-        return None
+    def check_round_winner(self):
+        if len(self.selected_cards) == len(self.player_names):
+            print(f"Cartas jogadas na rodada: {self.selected_cards}")
+            winning_card = None
+            round_winner = None
+            for player, card in self.selected_cards.items():
+                if winning_card is None or card.value > winning_card.value:
+                    winning_card = card
+                    round_winner = player
+            self.round_winners.append(round_winner)
+            print(f"Ganhador da rodada: {round_winner}")
 
-    def determine_round_winner(self):
-        if self.round_cards:
-            winner = max(self.round_cards, key=lambda x: x[1])[0]
-            self.round_winners.append(winner)
-            self.round_cards = []
-        else:
-            self.round_winners.append(None)
+    def check_game_winner(self):
+        player_points = {player: self.pontuacao.get_pontos(player) for player in self.player_names}
+        max_points = max(player_points.values())
+        for player, points in player_points.items():
+            if points >= 12:
+                self.winner = player
+                break
+        return self.winner
 
-    def run_round(self):
-        while self.current_round <= 3:
-            for player in self.player_names:
-                if not self.player_cards[player]:
-                    self.running = False
-                    return
-                self.draw()
-                pygame.display.flip()
-                selected = False
-                while not selected:
-                    for event in pygame.event.get():
-                        if event.type == pygame.QUIT:
-                            pygame.quit()
-                            sys.exit()
-                        if event.type == pygame.MOUSEBUTTONDOWN:
-                            if event.button == 1:
-                                card_index = (event.pos[0] - 100) // 100
-                                selected_card = self.get_selected_card(player, card_index)
-                                if selected_card:
-                                    self.round_cards.append((player, selected_card))
-                                    selected = True
-            self.determine_round_winner()
-            print(f"Vencedor da rodada {self.current_round}: {self.round_winners[-1]}")
-            self.current_round += 1
-        self.reset()
-
-    def reset(self):
-        self.current_round = 1
-        self.selected_cards = {player: [] for player in self.player_names}
-        self.round_cards = []
-
-    def determine_game_winner(self):
-        victories = {player: self.round_winners.count(player) for player in self.player_names}
-        self.winner = max(victories, key=victories.get)
+    def handle_truco(self):
+        self.truco_called = True
+        print("Truco foi chamado!")
+        if self.truco_called:
+            self.pontuacao.adicionar_pontos(self.player_names[self.current_player_index], 3)
+            self.current_player_index = (self.current_player_index + 1) % len(self.player_names)
+            self.selected_cards = {player: [] for player in self.player_names}
+            self.truco_called = False
 
     def run(self):
-        print("Running Rodadas")
         self.running = True
-        self.run_round()
-        self.determine_game_winner()
-
-
+        self.selected_cards = {player: [] for player in self.player_names}  # Inicializar com listas vazias
+        self.pontuacao = Pontuacao(self.player_names)
+        while self.running:
+            self.round_cards = []
+            truco_button = self.draw()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if truco_button.collidepoint(event.pos):
+                        self.handle_truco()
+                    else:
+                        for card_rect, card in self.round_cards:
+                            if card_rect.collidepoint(event.pos):
+                                current_player = self.player_names[self.current_player_index]
+                                self.selected_cards[current_player] = card
+                                self.player_cards[current_player].remove(card)
+                                self.current_player_index = (self.current_player_index + 1) % len(self.player_names)
+                                if all(self.selected_cards.values()):
+                                    self.check_round_winner()
+                                    round_winner = self.round_winners[-1]
+                                    self.pontuacao.adicionar_pontos(round_winner, 2 if self.truco_called else 1)
+                                    self.current_round += 1
+                                    self.selected_cards = {player: [] for player in
+                                                           self.player_names}  # Redefinir listas vazias
+                                    self.current_player_index = 0
+                                    self.truco_called = False
+                                    #Verifacar se acabou as cartas
+                                    if all(len(cards) == 0 for cards in self.player_cards.values()):
+                                        print("Acabaram as cartas")
+                                        for player in self.player_names:
+                                            pontos_faltando = 12 - self.pontuacao.get_pontos(player)
+                                            print(f"Jogador {player} precisa de {pontos_faltando} pontos para ganhar")
+                                        # Chamar mais cartas para os jogadores e voltar para a rodada
+                                        screen_card_instance = ScreenCard()
+                                        screen_card_instance.player_names = self.player_names
+                                        self.player_cards = screen_card_instance.generate_player_cards()
+                                break
+                    if self.check_game_winner():
+                        self.running = False
 class Winner:
     def __init__(self):
         self.running = True
         self.winner = None
 
     def draw_title(self):
-        title_surf = main_font.render("Vencedor", True, BLACK)
+        title_surf = custom_font.render("Vencedor", True, RED)
         title_rect = title_surf.get_rect(center=(width // 2, 50))
         screen.blit(title_surf, title_rect)
 
@@ -343,6 +435,7 @@ class Winner:
         self.draw_title()
         self.draw_square(width // 2, height // 2, 300, 100, VerdeClaro)
         self.draw_text(f"O vencedor foi: {self.winner}", main_font, BLACK, width // 2, height // 2)
+        print(f"O vencedor foi: {self.winner}")
         pygame.display.flip()
 
 class Game:

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*- 
-
 import random
 
 class Card:
@@ -8,11 +6,7 @@ class Card:
         self.value = value
 
     def __str__(self):
-        return f"{self.value} de {self.suit}"
-
-    def __gt__(self, other):
-        return self.value > other.value
-
+        return f'{self.value} de {self.suit}'
 class Deck:
     CARDS_QUANTITY = 40
     instance = None
@@ -24,21 +18,7 @@ class Deck:
         return Deck.instance
 
     def __init__(self):
-        self.cards = []
-        self.__init_deck()
         self.cards = self.create_deck()
-
-    def __init_deck(self):
-        self.__create_cards("Copas")
-        self.__create_cards("Ouros")
-        self.__create_cards("Espadas")
-        self.__create_cards("Paus")
-
-    def __create_cards(self, suit):
-        values = ['A', 'J', 'Q', 'K'] + [str(num) for num in range(2, 8)]
-        for value in values:
-            card = Card(suit, value)
-            self.cards.append(card)
 
     def create_deck(self):
         suits = ['Ouros', 'Copas', 'Espadas', 'Paus']
@@ -55,31 +35,23 @@ class Deck:
             raise Exception('Alguém está roubando e não devolveu todas as cartas!')
 
     def get_top_card(self):
-        top_card = self.cards[0]
-        # Remove it from pool
-        self.cards.remove(top_card)
+        top_card = self.cards.pop(0)
         return top_card
 
     def get_bottom_card(self):
-        bottom_card = self.cards[-1]
-        # Remove it from pool
-        self.cards.remove(bottom_card)
+        bottom_card = self.cards.pop(-1)
         return bottom_card
 
     def keep_card(self, card):
-        # Add the card back to the pool
         self.cards.append(card)
 
     def deal(self, quantity):
-        cards = []
-        for _ in range(quantity):
-            cards.append(self.get_top_card())
-        return cards
+        return [self.cards.pop(0) for _ in range(quantity)]
 
     def draw_card(self):
-        if len(self.cards) == 0:
-            self.shuffle()  # Reshuffle deck when empty (optional)
-            return "Baralho vazio (Deck reshuffled)"  # Optional warning message
+        if not self.cards:
+            self.cards = self.create_deck()
+            self.shuffle()
         return self.cards.pop()
 
     def deal_hand(self, number_of_cards):
@@ -91,68 +63,70 @@ class Deck:
         return self.cards.pop()
 
 class Hand:
-    """ Represents the player hand """
-
     def __init__(self, cards=None):
-        if cards is None:
-            cards = []
-        self.cards = cards
+        self.cards = cards if cards else []
 
     def add_card(self, card):
         self.cards.append(card)
 
     def throw_card(self, card_position=0):
-
         if 1 <= card_position <= len(self.cards):
             card_position -= 1
             card = self.cards[card_position]
             self.__remove_card(card)
         else:
-            # Return the first card of the hand by default
             if not self.cards:
                 raise Exception("Mão vazia")
             else:
                 card = self.cards[0]
                 self.__remove_card(card)
-
         return card
 
     def __remove_card(self, card):
         self.cards.remove(card)
 
     def __str__(self):
-        cards_str = ""
-        for card in self.cards:
-            cards_str += str(card) + ", "
-        return cards_str
-    
+        return ", ".join(str(card) for card in self.cards)
+
     def deal_cards(self):
         deck = Deck.get_instance()
         self.cards = deck.deal(3)
 
+    def winner(self):
+        points = 0
+        for card in self.cards:
+            if card.value in ['7', 'A', '3']:
+                points += 1
+        return points
+
+    def __gt__(self, other):
+        return self.winner() > other.winner()
+
+    def __lt__(self, other):
+        return self.winner() < other.winner()
+
+    def __eq__(self, other):
+        return self.winner() == other.winner()
 
 class CardCheck:
     def __init__(self, round_cards):
         self.round_cards = round_cards
         self.card_ranking = {
-            '4P': 14, '7O': 13, 'A': 12, '7E': 11, '3': 10, '2': 9,
-            'K': 8, 'J': 7, 'Q': 6, '7C': 5, '6': 4, '5': 3, '4': 2
+            '4O': 14, '7C': 13, '7E': 12, '7P': 11, '3': 10, '2': 9,
+            'A': 8, 'K': 7, 'J': 6, 'Q': 5, '7': 4, '6': 3, '5': 2, '4': 1
         }
 
     def get_card_value(self, card):
-        # Converte o naipe e valor para uma string correspondente no ranking
-        card_str = f"{card.value}{card.suit[0]}"
+        card_str = f"{card.value[0]}{card.suit[0]}"
         return self.card_ranking.get(card_str, 0)
 
     def determine_round_winner(self):
         player_wins = {player: 0 for player in self.round_cards.keys()}
-
         for i in range(3):
             max_value = -1
             round_winner = None
-
             for player, cards in self.round_cards.items():
-                card = cards[i]  # Cada jogador joga uma carta em cada mão
+                card = cards[i]
                 card_value = self.get_card_value(card)
                 if card_value > max_value:
                     max_value = card_value
@@ -161,204 +135,102 @@ class CardCheck:
             if round_winner:
                 player_wins[round_winner] += 1
 
-        # O jogador que ganhar duas ou mais mãos vence a rodada
         round_winner = max(player_wins, key=player_wins.get)
         return round_winner
 
     def calculate_points(self, cards):
-        points = 0
-        for card in cards:
-            points += self.get_card_value(card)
-        return points
+        return sum(self.get_card_value(card) for card in cards)
 
 
-class Pair:
-    """ Represents the pair """
-    
-    PAIR_ONE_ID = 'pair_one'
-    PAIR_TWO_ID = 'pair_two'
+class TestDeck:
+    NUMBER_OF_CARDS_IN_TRUCO = 40
 
-    def __init__(self, id_pair, players):
-        self.id_pair = id_pair
-        self.players = players
+    def __init__(self, player_cards):
+        self.player_cards = player_cards
 
-    players = {}.fromkeys(['player1','player2'],'player')
+    def test_deck_initialization(self, deck):
+        assert len(deck.cards) == self.NUMBER_OF_CARDS_IN_TRUCO
 
+    def test_get_top_card(self, deck):
+        top_card = deck.cards[0]
+        assert deck.get_top_card() == top_card
+        assert len(deck.cards) == (self.NUMBER_OF_CARDS_IN_TRUCO - 1)
 
-class Player:
-    def __init__(self, name):
-        self.name = name
-        self.hand = hand = Hand([])
+    def test_get_bottom_card(self, deck):
+        bottom_card = deck.cards[len(deck.cards) - 1]
+        assert deck.get_bottom_card() == bottom_card
+        assert len(deck.cards) == (self.NUMBER_OF_CARDS_IN_TRUCO - 1)
 
-    def set_hand(self, hand):
-        self.hand = hand
+    def test_keep_card(self, deck):
+        bottom_card = deck.get_bottom_card()
+        assert len(deck.cards) == (self.NUMBER_OF_CARDS_IN_TRUCO - 1)
+        deck.keep_card(bottom_card)
+        assert len(deck.cards) == self.NUMBER_OF_CARDS_IN_TRUCO
 
-    def __str__(self):
-        return self.name
+    def test_shuffle(self, deck):
+        try:
+            deck.shuffle()
+            shuffled = True
+        except Exception:
+            shuffled = False
+        assert shuffled
 
-class Match:
+    '''
+    Testa se a mão tem naipe repetido; se sim, retorna as cartas para o deck e lida novamente.
+    '''
+    def check_deck(self, deck):
+        deck = Deck.get_instance()
+        hand = Hand()
+        hand.deal_cards()
+        suits = [card.suit for card in hand.cards]
+        while len(set(suits)) < len(suits):
+            for card in hand.cards:
+                deck.keep_card(card)
+            hand.deal_cards()
+            suits = [card.suit for card in hand.cards]
+        return hand
 
-    def __init__(self, players):
-        self.players = players
-        self.round_cards = {Pair.PAIR_ONE_ID: [], Pair.PAIR_TWO_ID: []}
-        self.winner = None
+    def test_shuffle_without_a_card(self, deck):
+        bottom_card = deck.get_bottom_card()
+        try:
+            deck.shuffle()
+            shuffled = True
+        except Exception:
+            shuffled = False
+        assert not shuffled
 
-    def play_card(self, player, card):
-        if player in self.players:
-            self.round_cards[player].append(card)
-        else:
-            raise Exception("Jogador não pertence a partida")
+class Cardcheck:
+    def __init__(self, round_cards):
+        self.round_cards = round_cards
+        self.card_ranking = {
+            '4P': 14, '7O': 13, '7E': 12, '7C': 11, '3': 10, '2': 9,
+            'A': 8, 'K': 7, 'J': 6, 'Q': 5, '7': 4, '6': 3, '5': 2, '4': 1
+        }
 
-    def is_over(self):
-        return len(self.round_cards[Pair.PAIR_ONE_ID]) == 3 and len(self.round_cards[Pair.PAIR_TWO_ID]) == 3
+    def get_card_value(self, card):
+        card_str = f"{card.value}{card.suit[0]}"
+        return self.card_ranking.get(card_str, 0)
 
-    def check_winner(self):
-        card_check = CardCheck(self.round_cards)
-        self.winner = card_check.get_winner()
+    def determine_round_winner(self):
+        player_wins = {player: 0 for player in self.round_cards.keys()}
+        for i in range(3):
+            max_value = -1
+            round_winner = None
+            for player, cards in self.round_cards.items():
+                card = cards[i]
+                card_value = self.get_card_value(card)
+                if card_value > max_value:
+                    max_value = card_value
+                    round_winner = player
 
-    def __str__(self):
-        return f"Vencedor da rodada: {self.winner.name}"
+            if round_winner:
+                player_wins[round_winner] += 1
 
+        round_winner = max(player_wins, key=player_wins.get)
+        return round_winner
 
-class TestGame:
-    def __init__(self):
-        self.current_match = None
-        self.score = {Pair.PAIR_ONE_ID: 0, Pair.PAIR_TWO_ID: 0}
+    def calculate_points(self, cards):
+        return sum(self.get_card_value(card) for card in cards)
 
-    def start_match(self, players):
-        self.current_match = Match(players)
-
-    def end_match(self):
-        self.current_match.check_winner()
-        self.score[self.current_match.winner] += 1
-
-    def __str__(self):
-        return f"Placar da partida: Equipe 1: {self.score[Pair.PAIR_ONE_ID]}, Equipe 2: {self.score[Pair.PAIR_TWO_ID]}"
-
-
-class Game:
-    def __init__(self):
-        self.players = []
-        self.deck = Deck.get_instance()
-        self.current_match = None
-        self.score = {Pair.PAIR_ONE_ID: 0, Pair.PAIR_TWO_ID: 0}
-
-    def start_match(self):
-        self.current_match = Match(self.players)
-
-    def end_match(self):
-        self.current_match.check_winner()
-        self.score[self.current_match.winner] += 1
-
-    def __str__(self):
-        return f"Placar da partida: Equipe 1: {self.score[Pair.PAIR_ONE_ID]}, Equipe 2: {self.score[Pair.PAIR_TWO_ID]}"
-
-
-class Round:
-    def __init__(self, players):
-        self.players = players
-        self.round_cards = {Pair.PAIR_ONE_ID: [], Pair.PAIR_TWO_ID: []}
-        self.winner = None
-
-    def play_card(self, player, card):
-        if player in self.players:
-            self.round_cards[player].append(card)
-        else:
-            raise Exception("Jogador não pertence a partida")
-
-    def is_over(self):
-        return len(self.round_cards[Pair.PAIR_ONE_ID]) == 3 and len(self.round_cards[Pair.PAIR_TWO_ID]) == 3
-
-    def check_winner(self):
-        card_check = CardCheck(self.round_cards)
-        self.winner = card_check.get_winner()
-
-    def __str__(self):
-        return f"Vencedor da rodada: {self.winner.name}"
-
-
-# MatchState, NormalMatch, TrucoMatch, SixMatch, NineMatch, TwelveMatch
-
-class MatchState:
-    def __init__(self, match):
-        self.match = match
-
-    def play_card(self, player, card):
-        self.match.play_card(player, card)
-        if self.match.is_over():
-            self.match.check_winner()
-            self.match.end_match()
-            self.match = NormalMatch(self.match.players)
-        return self.match
-
-
-class NormalMatch(MatchState):
-    def __init__(self, players):
-        self.players = players
-        self.round = Round(players)
-
-    def play_card(self, player, card):
-        self.round.play_card(player, card)
-        if self.round.is_over():
-            self.round.check_winner()
-            self.match.end_match()
-            self.match = NormalMatch(self.players)
-        return self.match
-
-
-class TrucoMatch(MatchState):
-    def __init__(self, players):
-        self.players = players
-        self.round = Round(players)
-
-    def play_card(self, player, card):
-        self.round.play_card(player, card)
-        if self.round.is_over():
-            self.round.check_winner()
-            self.match.end_match()
-            self.match = NormalMatch(self.players)
-        return self.match
-
-
-class SixMatch(MatchState):
-    def __init__(self, players):
-        self.players = players
-        self.round = Round(players)
-
-    def play_card(self, player, card):
-        self.round.play_card(player, card)
-        if self.round.is_over():
-            self.round.check_winner()
-            self.match.end_match()
-            self.match = NormalMatch(self.players)
-        return self.match
-
-
-class NineMatch(MatchState):
-    def __init__(self, players):
-        self.players = players
-        self.round = Round(players)
-
-    def play_card(self, player, card):
-        self.round.play_card(player, card)
-        if self.round.is_over():
-            self.round.check_winner()
-            self.match.end_match()
-            self.match = NormalMatch(self.players)
-        return self.match
-
-
-class TwelveMatch(MatchState):
-    def __init__(self, players):
-        self.players = players
-        self.round = Round(players)
-
-    def play_card(self, player, card):
-        self.round.play_card(player, card)
-        if self.round.is_over():
-            self.round.check_winner()
-            self.match.end_match()
-            self.match = NormalMatch(self.players)
-        return self.match
-
-
+    def check_card(self, card1, card2):
+        return self.get_card_value(card1) > self.get_card_value(card2)
