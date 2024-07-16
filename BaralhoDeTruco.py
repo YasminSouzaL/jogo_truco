@@ -6,7 +6,10 @@ class Card:
         self.value = value
 
     def __str__(self):
-        return f'{self.value} de {self.suit}'
+        return f'{self.value}_{self.suit}'
+
+    def __repr__(self):
+        return f'{self.value}_{self.suit}'
 class Deck:
     CARDS_QUANTITY = 40
     instance = None
@@ -21,8 +24,8 @@ class Deck:
         self.cards = self.create_deck()
 
     def create_deck(self):
-        suits = ['Ouros', 'Copas', 'Espadas', 'Paus']
-        values = ['4', '5', '6', '7', 'Q', 'J', 'K', 'A', '2', '3']
+        suits = ['Ouro', 'Copas', 'Espadas', 'Paus']
+        values = ['4', '5', '6', '7', 'Q', 'J', 'K', 'As', '2', '3']
         deck = [Card(suit, value) for suit in suits for value in values]
         return deck
 

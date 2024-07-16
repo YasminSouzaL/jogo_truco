@@ -61,27 +61,12 @@ button_choose = pygame.Rect(500, 200, 100, 50)
 # Carregar imagens das cartas
 card_images = {}
 
-def load_card_images():
-    suits = ['Copas', 'Espadas', 'Paus', 'Ouro']
-    values = ['4', '5', '6', '7', 'Q', 'J', 'K', 'As', '2', '3']
-    base_path = "Data/imagem/card"
-    for suit in suits:
-        for value in values:
-            card_name = f"{value}_{suit}.png"
-            card_path = os.path.join(base_path, card_name)
-            if os.path.exists(card_path):
-                card_image = pygame.image.load(card_path)
-                card_image = pygame.transform.scale(card_image, (80, 120))  #Redimensionar a imagem
-                card_images[f"{value}_{suit}"] = card_image
-            else:
-                print(f"File not found: {card_path}")
-
-load_card_images()
 
 def draw_title():
     title_surf = main_font.render("Criar Jogador", True, RED)
     title_rect = title_surf.get_rect(center=(width // 2, 100))
     screen.blit(title_surf, title_rect)
+
 
 class PlayerCreationScreen:
     def __init__(self):
@@ -157,6 +142,7 @@ class PlayerCreationScreen:
             if len(self.player_names) >= 2:
                 self.running = False
 
+
 class ScreenCard:
     # Classe que controla a tela de cartas
     def __init__(self):
@@ -167,6 +153,7 @@ class ScreenCard:
         self.cards_drawn = False
         self.card_width = 80
         self.card_height = 120
+        self.card_images = self.load_card_images()
 
     def draw_title(self):
         title_surf = main_font.render("Cartas", True, RED)
@@ -195,26 +182,46 @@ class ScreenCard:
         text_rect = text_surf.get_rect(center=(x, y))
         screen.blit(text_surf, text_rect)
 
-    # Desenha as cartas
+    def load_card_images(self):
+        pygame.init()  # Inicializa todos os módulos do pygame
+        suits = ['Copas', 'Espadas', 'Paus', 'Ouro']
+        values = ['4', '5', '6', '7', 'Q', 'J', 'K', 'As', '2', '3']
+        base_path = "Data/imagem/card"
+        card_images = {}  # Inicializa o dicionário de imagens
+        for suit in suits:
+            for value in values:
+                card_name = f"{value}_{suit}.png"
+                card_path = os.path.join(base_path, card_name)
+                if os.path.exists(card_path):
+                    try:
+                        card_image = pygame.image.load(card_path)
+                        card_image = pygame.transform.scale(card_image, (
+                            self.card_width, self.card_height))  # Redimensiona a imagem
+                        card_images[f"{value}_{suit}"] = card_image
+                    except pygame.error as e:
+                        print(f"Erro ao carregar a imagem: {card_path}. Erro: {e}")
+                else:
+                    print(f"Arquivo não encontrado: {card_path}")
+
+        return card_images
+
     def draw_cards(self):
-        x = 50
-        y = 50
+        x = 75
+        y = 95
         for player, cards in self.player_cards.items():
-            self.draw_text(player, main_font, BLACK, x, y)
+            self.draw_text(player, main_font, BLACK, x + 100, y - 30)
             for card in cards:
                 card_name = str(card)
-                card_rect = pygame.Rect(x, y + 50, self.card_width, self.card_height)
-                pygame.draw.rect(screen, REDClaro, card_rect)
-                self.draw_text(
-                    card_name,
-                    main_font,
-                    BLACK,
-                    x + self.card_width // 2,
-                    y + self.card_height // 2 + 50
-                )
+                if card_name in self.card_images:
+                    card_image = self.card_images[card_name]
+                    screen.blit(card_image, (x, y))
+                else:
+                    # Desenha um retângulo caso a imagem não seja encontrada
+                    card_rect = pygame.Rect(x, y, self.card_width, self.card_height)
+                    pygame.draw.rect(screen, REDClaro, card_rect)
                 x += 100
-            y += 200
             x = 50
+            y += 210
 
     def button_play(self):
         pygame.draw.rect(screen, GREY, play_button)
@@ -280,6 +287,7 @@ class Rodadas:
         self.winner = None
         self.truco_called = False
         self.pontuacao = None
+        self.card_images = ScreenCard().card_images
 
     def draw_title(self):
         title_surf = main_font.render("Rodadas", True, RED)
@@ -308,19 +316,12 @@ class Rodadas:
         x = 100
         y = 140
         for card in self.player_cards[player]:
-            card_name = str(card)
-            card_rect = pygame.Rect(x, y, self.card_width, self.card_height)
-            pygame.draw.rect(screen, REDClaro, card_rect)
-            self.draw_text(
-                card_name,
-                main_font,
-                BLACK,
-                x + self.card_width // 2,
-                y + self.card_height // 2
-            )
-            if card not in self.selected_cards.get(player, []):
-                self.round_cards.append((card_rect, card))
-            x += 200
+            card_image = self.card_images[str(card)]
+            card_rect = card_image.get_rect(topleft=(x, y))
+            screen.blit(card_image, card_rect)
+            self.round_cards.append((card_rect, card))
+            x += self.card_width
+        x += 200
 
     def draw(self):
         screen.blit(background_image, (0, 0))
@@ -333,6 +334,7 @@ class Rodadas:
         truco_button = self.draw_truco_button()
         pygame.display.flip()
         return truco_button
+
     def hand_winner(self, card1, card2):
         hand = Hand()
         hand.add_card(card1)
@@ -412,6 +414,8 @@ class Rodadas:
                                 break
                     if self.check_game_winner():
                         self.running = False
+
+
 class Winner:
     def __init__(self):
         self.running = True
@@ -437,6 +441,7 @@ class Winner:
         self.draw_text(f"O vencedor foi: {self.winner}", main_font, BLACK, width // 2, height // 2)
         print(f"O vencedor foi: {self.winner}")
         pygame.display.flip()
+
 
 class Game:
     def __init__(self):
@@ -483,6 +488,7 @@ class Game:
                 self.winner.draw()
                 pygame.time.wait(5000)  # Espera 5 segundos antes de encerrar
                 self.running = False
+
 
 game = Game()
 game.run()
