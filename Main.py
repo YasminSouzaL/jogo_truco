@@ -117,10 +117,10 @@ class Game:
                 self.switch_screen()
             elif self.current_screen == "Winner":
                 self.winner.draw()
-                pygame.time.wait(5000)  # Espera 5 segundos antes de encerrar
+                pygame.time.wait(3000)  # Espera 5 segundos antes de encerrar
                 self.running = False
 def menu():
-    text1, text2, text3 = "Jogar", "Settings", "Antigo"
+    text1, text2, text3 = "Jogar", "Settings", "Regras"
     size_button = (200, 50)
 
     button_game = Buttons(text1, size_button)
@@ -146,7 +146,7 @@ def menu():
                     return "Settings"
                 if button_old.collision_point(pygame.mouse.get_pos()):
                     button_old.up()
-                    return "Antigo"
+                    return "Regras"
 
         button_game.print_display(pygame.mouse.get_pos())
         button_setting.print_display(pygame.mouse.get_pos())
@@ -181,7 +181,9 @@ def main_game_loop():
             tosetup = ScreenSettings()
             tosetup.run()
         elif action == "Antigo":
-            display_message("Em construção")
+            # Ir para as regras
+            tosetup = ScreenRules()
+            tosetup.run()
 
 
 if __name__ == "__main__":

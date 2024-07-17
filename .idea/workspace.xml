@@ -4,40 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0d3de13a-85c1-48aa-aff0-a5caf3502bfd" name="Changes" comment="Update Code">
-      <change afterPath="$PROJECT_DIR$/Antigo/BaralhoDeTruco.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Antigo/truco_regras.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/font/COMICATE.TTF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/font/DIGITAL.TXT" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/font/DS-DIGI.TTF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/font/DS-DIGIB.TTF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/font/DS-DIGII.TTF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/font/DS-DIGIT.TTF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/font/stocky.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/imagem/background.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/imagem/background2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/imagem/button1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/imagem/button2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/imagem/cards.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/imagem/config.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/imagem/logo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/imagem/textbox.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Data/imagem/wallpaper.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BaralhoDeTruco.py" beforeDir="false" afterPath="$PROJECT_DIR$/BaralhoDeTruco.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Captura de tela de 2024-04-07 18-24-05.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/common.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EntityStore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Logica.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MainTu.py" beforeDir="false" afterPath="$PROJECT_DIR$/Antigo/MainTu.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tela_stilo.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tela_stilo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/antigatela.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tela_j.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/truco_regras.py" beforeDir="false" afterPath="$PROJECT_DIR$/truco_regras.py" afterDir="false" />
-    </list>
+    <list default="true" id="0d3de13a-85c1-48aa-aff0-a5caf3502bfd" name="Changes" comment="Update Code" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -51,9 +18,22 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <excluded-from-favorite>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="main" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </excluded-from-favorite>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="04b249e67ed4549eb577b2888389f7773834d037" />
+        <entry key="$PROJECT_DIR$" value="b9cd76a378bdbe936848bb7bdb0a5262c2cb378a" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -89,42 +69,48 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Python tests.Python tests in truco_regras.py.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Display.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.MainTu.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Tela_stilo.executor&quot;: &quot;Run&quot;,
-    &quot;Python.aiketruco_main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.gvj.executor&quot;: &quot;Run&quot;,
-    &quot;Python.hakhs.executor&quot;: &quot;Run&quot;,
-    &quot;Python.tela_j.executor&quot;: &quot;Run&quot;,
-    &quot;Python.test.executor&quot;: &quot;Run&quot;,
-    &quot;Python.ty.executor&quot;: &quot;Run&quot;,
-    &quot;Python.uy.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;update&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Yasmin/OneDrive/Music/oo/test&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.intellij.pycharm.community.ide.impl.configuration.PythonContentEntriesConfigurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Python tests.Python tests in BaralhoDeTruco.py.executor": "Debug",
+    "Python tests.Python tests in truco_regras.py.executor": "Debug",
+    "Python.Display.executor": "Run",
+    "Python.Main.executor": "Run",
+    "Python.MainTu.executor": "Run",
+    "Python.Tela_stilo.executor": "Run",
+    "Python.aiketruco_main.executor": "Run",
+    "Python.code1007.executor": "Run",
+    "Python.gvj.executor": "Run",
+    "Python.hakhs.executor": "Run",
+    "Python.jk.executor": "Run",
+    "Python.kj.executor": "Run",
+    "Python.oi.executor": "Run",
+    "Python.res.executor": "Run",
+    "Python.tela_j.executor": "Run",
+    "Python.test.executor": "Debug",
+    "Python.ty.executor": "Run",
+    "Python.uy.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "update",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Yasmin/OneDrive/Music/oo/test",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.intellij.pycharm.community.ide.impl.configuration.PythonContentEntriesConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-PY-241.17890.14" />
-        <option value="bundled-python-sdk-5b207ade9991-7e9c3bbb6e34-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-241.17890.14" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-PY-241.18034.82" />
+        <option value="bundled-python-sdk-975db3bf15a3-2767605e8bc2-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-241.18034.82" />
       </set>
     </attachedChunks>
   </component>
@@ -292,6 +278,40 @@
       <workItem from="1720115925541" duration="36000" />
       <workItem from="1720115967340" duration="9000" />
       <workItem from="1720119965519" duration="8333000" />
+      <workItem from="1720138240972" duration="289000" />
+      <workItem from="1720139436819" duration="600000" />
+      <workItem from="1720141711137" duration="170000" />
+      <workItem from="1720142376158" duration="7674000" />
+      <workItem from="1720190622543" duration="11902000" />
+      <workItem from="1720208202659" duration="381000" />
+      <workItem from="1720219729063" duration="9572000" />
+      <workItem from="1720231976144" duration="1429000" />
+      <workItem from="1720463514686" duration="5624000" />
+      <workItem from="1720545392423" duration="1197000" />
+      <workItem from="1720563773125" duration="2806000" />
+      <workItem from="1720568469494" duration="3584000" />
+      <workItem from="1720572597351" duration="498000" />
+      <workItem from="1720573140079" duration="290000" />
+      <workItem from="1720574658005" duration="742000" />
+      <workItem from="1720575428428" duration="407000" />
+      <workItem from="1720606599105" duration="3523000" />
+      <workItem from="1720618083725" duration="5488000" />
+      <workItem from="1720635499789" duration="5019000" />
+      <workItem from="1720651774466" duration="12435000" />
+      <workItem from="1720705845280" duration="3473000" />
+      <workItem from="1720716261953" duration="1440000" />
+      <workItem from="1720726264684" duration="5480000" />
+      <workItem from="1720793862368" duration="19997000" />
+      <workItem from="1720914999732" duration="36000" />
+      <workItem from="1720915113495" duration="7153000" />
+      <workItem from="1720974446997" duration="2958000" />
+      <workItem from="1721060402693" duration="817000" />
+      <workItem from="1721070201820" duration="19383000" />
+      <workItem from="1721098602383" duration="3246000" />
+      <workItem from="1721128096714" duration="16341000" />
+      <workItem from="1721155765934" duration="3743000" />
+      <workItem from="1721165197985" duration="5027000" />
+      <workItem from="1721170275017" duration="4928000" />
     </task>
     <servers />
   </component>
@@ -321,25 +341,41 @@
           <line>57</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/BaralhoDeTruco.py</url>
+          <line>60</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="player_cards" language="Python" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/antigatela_py$Tela_stilo.coverage" NAME="Tela_stilo Coverage Results" MODIFIED="1718140809314" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Main_py$gvj.coverage" NAME="gvj Coverage Results" MODIFIED="1718243272972" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Antigo" />
+    <SUITE FILE_PATH="coverage/Main_py$code1007.coverage" NAME="code1007 Coverage Results" MODIFIED="1721084581713" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/jogo_truco$aiketruco_main.coverage" NAME="aiketruco_main Coverage Results" MODIFIED="1717699667881" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Main_py$uy.coverage" NAME="uy Coverage Results" MODIFIED="1718997842154" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Main_py$Display.coverage" NAME="Display Coverage Results" MODIFIED="1718160888473" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../jogo_giodanio" />
+    <SUITE FILE_PATH="coverage/Main_py$uy.coverage" NAME="uy Coverage Results" MODIFIED="1718997842154" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/antigatela_py$MainTu.coverage" NAME="MainTu Coverage Results" MODIFIED="1718075119590" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Main_py$oi.coverage" NAME="oi Coverage Results" MODIFIED="1720231628307" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Main_py$ty.coverage" NAME="ty Coverage Results" MODIFIED="1718802903282" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Main_py$Main.coverage" NAME="Main Coverage Results" MODIFIED="1720128744092" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Main_py$res.coverage" NAME="res Coverage Results" MODIFIED="1721169083689" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Main_py$.coverage" NAME=" Coverage Results" MODIFIED="1721174008017" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Antigo" />
+    <SUITE FILE_PATH="coverage/Main_py$Main.coverage" NAME="Main Coverage Results" MODIFIED="1721179098486" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/jogo_truco$.coverage" NAME=" Coverage Results" MODIFIED="1717446456772" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/antigatela_py$Main.coverage" NAME="Main Coverage Results" MODIFIED="1718143456228" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../jogo_giodanio" />
     <SUITE FILE_PATH="coverage/Main_py$MainTu.coverage" NAME="MainTu Coverage Results" MODIFIED="1718640716423" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Antigo" />
-    <SUITE FILE_PATH="coverage/Main_py$test.coverage" NAME="test Coverage Results" MODIFIED="1720123067045" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Main_py$test.coverage" NAME="test Coverage Results" MODIFIED="1721174026368" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Main_py$hakhs.coverage" NAME="hakhs Coverage Results" MODIFIED="1718221143823" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Main_py$jk.coverage" NAME="jk Coverage Results" MODIFIED="1721168400943" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/jogo_truco$tela_j.coverage" NAME="tela_j Coverage Results" MODIFIED="1717011538608" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/antigatela_py$Display.coverage" NAME="Display Coverage Results" MODIFIED="1718143247487" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../jogo_giodanio" />
-    <SUITE FILE_PATH="coverage/Main_py$Tela_stilo.coverage" NAME="Tela_stilo Coverage Results" MODIFIED="1718898822815" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Main_py$Tela_stilo.coverage" NAME="Tela_stilo Coverage Results" MODIFIED="1720470774398" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Main_py$kj.coverage" NAME="kj Coverage Results" MODIFIED="1721072551961" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
