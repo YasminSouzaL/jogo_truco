@@ -519,3 +519,33 @@ class ScreenSettings:
                     self.running = False
         pygame.quit()
         sys.exit()
+
+class ScreenRules:
+    def __init__(self):
+        self.running = True
+
+    def draw_title(self):
+        title_surf = main_font.render("Regras", True, RED)
+        title_rect = title_surf.get_rect(center=(width // 2, 200))
+        screen.blit(title_surf, title_rect)
+
+    def draw_site(self):
+        site_surf = custom_font.render("https://www.pagat.com/pointtrick/truco.html", True, BLUE)
+        site_rect = site_surf.get_rect(center=(width // 2, 300))
+        screen.blit(site_surf, site_rect)
+    def draw(self):
+        screen.fill(WHITE)
+        self.draw_title()
+        self.draw_site()
+        pygame.display.flip()
+
+
+    def run(self):
+        while self.running:
+            self.draw()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
+        pygame.quit()
+        sys.exit()
+

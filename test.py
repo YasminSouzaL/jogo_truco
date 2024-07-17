@@ -144,7 +144,19 @@ class PlayerCreationScreen:
 
 
 class ScreenCard:
-    # Classe que controla a tela de cartas
+    '''
+    Classe para a tela de cartas
+    Metodos:
+        __init__ - Inicializa a classe
+        draw_title - Desenha o título da tela
+        checkplayer - Verifica se há jogadores suficientes
+        generate_player_cards - Gera cartas para os jogadores
+        draw_text - Desenha texto na tela
+        load_card_images - Carrega as imagens das cartas
+        draw_cards - Desenha as cartas dos jogadores
+        button_play - Desenha o botão de jogar
+        draw - Desenha a tela
+    '''
     def __init__(self):
         self.running = True
         self.deck = Deck()
@@ -174,7 +186,8 @@ class ScreenCard:
         player_cards = {}
         for player in self.player_names:
             player_cards[player] = self.deck.deal_hand(3)
-        TestDeck(player_cards)
+            print(f"Cartas para {player}: {player_cards[player]}")
+        #TestDeck(player_cards)
         return player_cards
 
     def draw_text(self, text, font, color, x, y):
@@ -414,7 +427,6 @@ class Rodadas:
                                 break
                     if self.check_game_winner():
                         self.running = False
-
 
 class Winner:
     def __init__(self):
