@@ -1,7 +1,8 @@
 import sys
 import pygame
 import os
-from BaralhoDeTruco import Deck,Hand,TestDeck
+from abc import ABC, abstractmethod
+from BaralhoDeTruco import Deck,Hand
 pygame.init()
 
 # Tamanhos dos botões
@@ -39,8 +40,10 @@ background_image = pygame.image.load("data/imagem/background.png")
 background_image = pygame.transform.scale(background_image, (width, height))
 win_image = pygame.image.load("data/imagem/wallpaper.png")
 win_image = pygame.transform.scale(win_image, (width, height))
+tela_fundo = pygame.image.load("data/imagem/tela_fundo.png")
+tela_fundo = pygame.transform.scale(tela_fundo, (width, height))
 textbox = pygame.image.load("data/imagem/textbox.png")
-textbox = pygame.transform.scale(textbox, (150, 40))
+textbox = pygame.transform.scale(textbox, (190, 50))
 
 # Caixa de entrada
 input_boxes = [pygame.Rect(170, 200, 300, 50), pygame.Rect(170, 300, 300, 50)]
@@ -66,6 +69,35 @@ class Background:
     def draw_background(self):
         screen.blit(self.image, (0, 0))
         clock.tick(250)
+class GameContract(ABC):
+    '''
+        Classe abstrata que define os métodos que
+        devem ser implementados pelas classes que a herdam.
+    '''
+    @property
+    @abstractmethod
+    def draw_title(self):
+        pass
+
+    @abstractmethod
+    def draw_input(self):
+        pass
+
+    @abstractmethod
+    def draw_buttons(self):
+        pass
+
+    @abstractmethod
+    def draw(self):
+        pass
+
+    @abstractmethod
+    def run(self):
+        pass
+
+    @abstractmethod
+    def switch_screen(self):
+        pass
 class Buttons(pygame.sprite.Sprite):
     def __init__(self, text, size):
         super().__init__()
@@ -125,10 +157,12 @@ class PlayerCreationScreen:
         self.input_name = ''
 
     def draw_title(self):
-        title_surf = main_font.render("Criar Jogador", True, RED)
-        title_rect = title_surf.get_rect(center=(width // 2, 100))
-        screen.blit(title_surf, title_rect)
-
+        textbox_rect = textbox.get_rect(center=(width // 2 - 2, height // 9))
+        title_surf = main_font.render("Jogador:", True, RED)
+        title_rect = title_surf.get_rect(center=(width // 2, height // 9))
+        screen.blit(textbox, textbox_rect.topleft)  
+        screen.blit(title_surf, title_rect) 
+        
     def draw_text(self, text, font, color, x, y):
         text_surf = font.render(text, True, color)
         text_rect = text_surf.get_rect(center=(x, y))
@@ -188,12 +222,14 @@ class PlayerCreationScreen:
                         box_colors[i] = RED if active_boxes[i] else GREY
                 if event.type == pygame.KEYDOWN:
                     if active_boxes[0]:
-                        if event.key == pygame.K_BACKSPACE:
+                        if event.key == pygame.K_RETURN:
+                            self.add_player(self.input_name)
+                            self.input_name = '' # Limpar a caixa de entrada
+                        elif event.key == pygame.K_BACKSPACE:
                             self.input_name = self.input_name[:-1]
                         else:
                             if len(self.input_name) < 10:
                                 self.input_name += event.unicode
-
             if len(self.player_names) >= 2:
                 self.running = False
 class ScreenCard:
@@ -212,9 +248,11 @@ class ScreenCard:
         self.card_images = self.load_card_images()
 
     def draw_title(self):
+        textbox_rect = textbox.get_rect(center=(width // 2, height // 10))
         title_surf = main_font.render("Cartas", True, RED)
-        title_rect = title_surf.get_rect(center=(width // 2, 50))
-        screen.blit(title_surf, title_rect)
+        title_rect = title_surf.get_rect(center=(width // 2, height // 9))
+        screen.blit(textbox, textbox_rect.topleft)  
+        screen.blit(title_surf, title_rect) 
 
     def checkplayer(self):
         if len(self.player_names) >= 2:
@@ -230,7 +268,6 @@ class ScreenCard:
         player_cards = {}
         for player in self.player_names:
             player_cards[player] = self.deck.deal_hand(3)
-        TestDeck(player_cards)
         return player_cards
 
     def draw_text(self, text, font, color, x, y):
@@ -242,7 +279,7 @@ class ScreenCard:
         pygame.init()  # Inicializa todos os módulos do pygame
         suits = ['Copas', 'Espadas', 'Paus', 'Ouro']
         values = ['4', '5', '6', '7', 'Q', 'J', 'K', 'As', '2', '3']
-        base_path = "Data/imagem/card"
+        base_path = "data/imagem/card"
         card_images = {}  # Inicializa o dicionário de imagens
         for suit in suits:
             for value in values:
@@ -284,7 +321,7 @@ class ScreenCard:
         self.draw_text('Jogar', main_font, BLACK, 550, 225)
 
     def draw(self):
-        screen.fill(WHITE)
+        screen.blit(tela_fundo, (0, 0))
         self.draw_title()
         self.draw_cards()
         self.button_play()
@@ -342,21 +379,27 @@ class Rodadas:
         self.card_images = ScreenCard().card_images
 
     def draw_title(self):
-        title_surf = main_font.render("Rodadas", True, RED)
-        title_rect = title_surf.get_rect(center=(width // 2, 50))
-        screen.blit(title_surf, title_rect)
+        textbox_rect = textbox.get_rect(center=(width // 2, height // 8))
+        title_surf = main_font.render("Rodadas:", True, RED)
+        title_rect = title_surf.get_rect(center=(width // 2, height // 9))
+        screen.blit(textbox, textbox_rect.topleft)  
+        screen.blit(title_surf, title_rect) 
 
     def draw_text(self, text, font, color, x, y):
         text_surf = font.render(text, True, color)
         text_rect = text_surf.get_rect(center=(x, y))
         screen.blit(text_surf, text_rect)
+    
+    def square_pontos(self, x, y, width, height, color):
+        pygame.draw.rect(screen, color, (x - width // 3, y - height // 2, width, height))
 
     def draw_players(self):
-        y = 400
+        y = 350
         for player in self.player_names:
+            self.square_pontos(150, y, 250, 60, VerdeClaro)
             points = self.pontuacao.get_pontos(player)
-            self.draw_text(f"{player} - {points} pontos", main_font, BLACK, 150, y)
-            y += 50
+            self.draw_text(f"{player} - {points} pontos", main_font, BLACK, 180, y)
+            y += 60
 
     def draw_truco_button(self):
         truco_button = pygame.Rect(550, 400, 150, 50)
@@ -376,11 +419,10 @@ class Rodadas:
         x += 200
 
     def draw(self):
-        screen.blit(background_image, (0, 0))
-        screen.fill(WHITE)
+        screen.blit(tela_fundo, (0, 0))
         self.draw_title()
         current_player = self.player_names[self.current_player_index]
-        self.draw_text(f"Vez de {current_player}", main_font, BLACK, 300, 100)
+        self.draw_text(f"Vez de {current_player}", main_font, BLACK, 330, 120)
         self.draw_cards(current_player)
         self.draw_players()
         truco_button = self.draw_truco_button()
@@ -448,6 +490,8 @@ class Rodadas:
                                     self.check_round_winner()
                                     round_winner = self.round_winners[-1]
                                     self.pontuacao.adicionar_pontos(round_winner, 2 if self.truco_called else 1)
+                                    #mostrar a carta vencedora
+                                    print(f"A carta vencedora foi: {self.selected_cards[round_winner]}")
                                     self.current_round += 1
                                     self.selected_cards = {player: [] for player in
                                                            self.player_names}  # Redefinir listas vazias
@@ -472,9 +516,11 @@ class Winner:
         self.winner = None
 
     def draw_title(self):
-        title_surf = main_font.render("Vencedor", True, RED)
-        title_rect = title_surf.get_rect(center=(width // 2, 50))
-        screen.blit(title_surf, title_rect)
+        textbox_rect = textbox.get_rect(center=(width // 2, height // 9))
+        title_surf = main_font.render("Vencedor:", True, RED)
+        title_rect = title_surf.get_rect(center=(width // 2, height // 9))
+        screen.blit(textbox, textbox_rect.topleft)  
+        screen.blit(title_surf, title_rect) 
 
     def draw_text(self, text, font, color, x, y):
         text_surf = font.render(text, True, color)
@@ -491,54 +537,35 @@ class Winner:
         self.draw_text(f"O vencedor foi: {self.winner}", main_font, BLACK, width // 2, height // 2)
         pygame.display.flip()
 
-class ScreenSettings:
-    def __init__(self):
-        self.running = True
-
-    def draw_title(self):
-        title_surf = main_font.render("Configurações", True, RED)
-        title_rect = title_surf.get_rect(center=(width // 2, 200))
-        screen.blit(title_surf, title_rect)
-
-    def draw_emoji(self):
-        emoji = pygame.image.load("data/imagem/config.png")
-        emoji = pygame.transform.scale(emoji, (100, 100))
-        screen.blit(emoji, (width // 2, 300))
-
-    def draw(self):
-        screen.fill(WHITE)
-        self.draw_title()
-        self.draw_emoji()
-        pygame.display.flip()
-
-    def run(self):
-        while self.running:
-            self.draw()
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.running = False
-        pygame.quit()
-        sys.exit()
-
 class ScreenRules:
     def __init__(self):
         self.running = True
 
     def draw_title(self):
         title_surf = main_font.render("Regras", True, RED)
-        title_rect = title_surf.get_rect(center=(width // 2, 200))
-        screen.blit(title_surf, title_rect)
+        title_rect = title_surf.get_rect(center=(width // 2, height // 9 // 2))
+        screen.blit(title_surf, title_rect) 
 
-    def draw_site(self):
-        site_surf = custom_font.render("https://www.pagat.com/pointtrick/truco.html", True, BLUE)
-        site_rect = site_surf.get_rect(center=(width // 2, 300))
-        screen.blit(site_surf, site_rect)
+    def draw_square(self):
+        rules = [
+            "1. O objetivo é ganhar 2 de 3 rodadas.",
+            "2. Cada jogador recebe 3 cartas.",
+            "3. As cartas são jogadas uma de cada vez.",
+            "4. O valor das cartas segue a ordem: 4 > 5 > 6 > 7 > Q > J > K > A > 2 > 3.",
+            "5. Em caso de empate, ninguém ganha pontos."
+        ]
+        y_offset = 200
+        for rule in rules:
+            rule_surf = custom_font.render(rule, True, BLACK)
+            rule_rect = rule_surf.get_rect(center=(width // 9, y_offset))
+            screen.blit(rule_surf, rule_rect)
+            y_offset += 40
+
     def draw(self):
         screen.fill(WHITE)
         self.draw_title()
-        self.draw_site()
+        self.draw_square()
         pygame.display.flip()
-
 
     def run(self):
         while self.running:
@@ -548,4 +575,3 @@ class ScreenRules:
                     self.running = False
         pygame.quit()
         sys.exit()
-
